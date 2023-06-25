@@ -10,11 +10,11 @@ module alu ( clk, in_A, in_B, out, op, flags  ) ;
   reg [8:0] r_out;
   wire [2:0] op_w;
   wire fO , fN , fZ , fC;
-  
+
   initial begin
-	r_out <= 0 ;
+    r_out <= 0 ;
   end
-  
+
   assign r_a = { 1'b0, in_A };
   assign r_b = { 1'b0, in_B };
   assign op_w = op;
@@ -27,7 +27,7 @@ module alu ( clk, in_A, in_B, out, op, flags  ) ;
   localparam comp = 3'b101;
   localparam shr = 3'b110;
   localparam shl = 3'b111;
-  
+
   always @(posedge clk) begin
     case ( op )
       add : begin r_out <= r_a + r_b; end
