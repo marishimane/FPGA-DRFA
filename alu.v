@@ -34,7 +34,7 @@ module alu ( clk, in_A, in_B, out, op, flags  ) ;
       sub : begin r_out <= r_a - r_b; end
       or_ : begin r_out <= r_a | r_b; end
       and_ : begin r_out <= r_a & r_b; end
-      not_ : begin r_out <= !r_a; end
+      not_ : begin r_out <= ~r_a; end
       comp : begin r_out <= r_a == r_b; end
       shr : begin r_out <= r_a >> 1; end
       shl : begin r_out <= r_a << 1; end
@@ -44,9 +44,8 @@ module alu ( clk, in_A, in_B, out, op, flags  ) ;
   assign fN = r_out[7];
   assign fZ = (r_out[7:0] == 8'h0)? 1 : 0;
   assign fC = ( op_w == add | op_w == sub )? r_out[8] : 0;
-  assign fO = ( op_w == add | op_w == sub )? ((r_out[8:7] == 2'b01 || r_out[8:7] == 2'b10)? 1 : 0) : 0;
+  assign fO = ( op_w == add )? ((r_a[7] == 0 && r_b[7] == 0 && r_out[7] == 1) | (r_a[7] == 1 && r_b[7] == 1 && r_out[7] == 0)? 1 : 0) : ( op_w == sub )? (r_a[7] == 0 && r_b[7] == 1 && r_out[7] == 1) | (r_a[7] == 1 && r_b[7] == 0 && r_out[7] == 0) : 0;
   assign flags = { fC, fN, fO, fZ };
   assign out = r_out[7:0];
 
 endmodule
-
