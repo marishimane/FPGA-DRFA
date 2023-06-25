@@ -6,7 +6,7 @@
 
 module test;
   reg clk = 0, pc_load = 0, pc_inc = 0, pc_enOut = 0;
-  reg [7:0] in_value, out_value;
+  reg [8:0] in_value, out_value;
 
   program_counter program_counter(
     .clk(clk),
@@ -25,19 +25,19 @@ module test;
     pc_enOut = 1;
 
     // Load the PC
-    in_value <= 8'b11001100;
+    in_value <= 9'b111001100;
     pc_load = 1;
     toggle_clk;
     pc_load = 0;
     toggle_clk;
-    `assert( out_value, 8'b11001100 );
+    `assert( out_value, 9'b111001100 );
 
     // Increment the PC
     pc_inc = 1;
     toggle_clk;
     pc_inc = 0;
     toggle_clk;
-    `assert( out_value, 8'b11001101 );
+    `assert( out_value, 9'b111001101 );
   end
 
   task toggle_clk;
