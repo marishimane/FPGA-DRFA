@@ -77,6 +77,22 @@ module data_memory_test;
       $display("[TEST FAILED] 5");
       $finish;
     end
+
+    // reading io ports
+    in_addr <= 10'b11_1111_1110;
+    toggle_clk;
+
+    if(out_data !== 8'bx) begin
+      $display("[TEST FAILED] 6");
+      $finish;
+    end
+
+    in_addr <= 10'b11_1111_1111;
+    toggle_clk;
+    if(out_data !== 8'bx) begin
+      $display("[TEST FAILED] 7");
+      $finish;
+    end
   end
 
 
