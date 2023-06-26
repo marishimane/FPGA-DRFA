@@ -1,14 +1,22 @@
-module data_memory_test;
-  reg clk = 0;
+`define assert(signal, value) \
+    if (signal !== value) begin \
+        $display("ASSERTION FAILED in %m: signal != value"); \
+        $finish; \
+    end
+
+localparam INPUT_PORT = 10'b1111111110;
+localparam OUTPUT_PORT = 10'b1111111111;
+
+module test;
+  reg clk = 0, in_write_en = 0, in_read_en = 0;
+  reg [7:0] in_data, out_data;
   reg [9:0] in_addr;
-  reg in_write_en = 0;
-  reg [7:0] in_data;
-  reg [7:0] out_data;
 
   data_memory DATA_MEMORY(
     .clk(clk),
     .in_addr(in_addr),
     .in_write_en(in_write_en),
+    .in_read_en(in_read_en),
     .in_data(in_data),
     .out_data(out_data)
   );
@@ -18,84 +26,67 @@ module data_memory_test;
     $dumpfile("dump.vcd");
     $dumpvars(1);
 
-    // write some value
+    in_read_en <= 1;
+
+    // WRITE
+    in_data <= 8'b10011001;
+    // with the addres of the input port
+    in_addr <= INPUT_PORT;
     in_write_en <= 1;
-    in_data <= 8'b0101_0101;
-    in_addr <= 10'b00_0000_0000;
-
     toggle_clk;
-    if(out_data !== 8'b0101_0101) begin
-      $display("[TEST FAILED] 1");
-      $finish;
-    end
+    `assert( out_data, 8'bz );
+    toggle_clk;
 
-    // disable write
+    // with the addres of the output port
+    in_addr <= OUTPUT_PORT;
+    toggle_clk;
+    `assert( out_data, 8'bz );
+    toggle_clk;
+
+    // with a valid address
+    in_addr <= 8'b00001111;
+    // with in_write_en = 0
     in_write_en <= 0;
-    in_data <= 8'b1111_1111;
-
+    toggle_clk;
+    `assert( out_data, 8'bx );
     toggle_clk;
 
-    if(out_data !== 8'b0101_0101) begin
-      $display("[TEST FAILED] 2");
-      $finish;
-    end
-
-    // change address and write
+    // with in_write_en = 1
     in_write_en <= 1;
-    in_data <= 8'b0000_0010;
-    in_addr <= 10'b00_0000_0001;
     toggle_clk;
-
-    in_data <= 8'b0000_0100;
-    in_addr <= 10'b00_0000_0010;
+    `assert( out_data, 8'b10011001 );
     toggle_clk;
-
-    in_data <= 8'b0000_1000;
-    in_addr <= 10'b00_0000_0011;
-    toggle_clk;
-
     in_write_en <= 0;
-    in_data <= 8'bZZZZ_ZZZZ;
 
-    in_addr <= 10'b00_0000_0001;
+    // READ
+    in_read_en <= 1;
+    // with the addres of the input port
+    in_addr <= INPUT_PORT;
     toggle_clk;
-    if(out_data !== 8'b0000_0010) begin
-      $display("[TEST FAILED] 3");
-      $finish;
-    end
-
-    in_addr <= 10'b00_0000_0010;
-    toggle_clk;
-    if(out_data !== 8'b0000_0100) begin
-      $display("[TEST FAILED] 4");
-      $finish;
-    end
-
-    in_addr <= 10'b00_0000_0011;
-    toggle_clk;
-    if(out_data !== 8'b0000_1000) begin
-      $display("[TEST FAILED] 5");
-      $finish;
-    end
-
-    // reading io ports
-    in_addr <= 10'b11_1111_1110;
+    `assert( out_data, 8'bz );
     toggle_clk;
 
-    if(out_data !== 8'bx) begin
-      $display("[TEST FAILED] 6");
-      $finish;
-    end
-
-    in_addr <= 10'b11_1111_1111;
+    // with the addres of the output port
+    in_addr <= OUTPUT_PORT;
     toggle_clk;
-    if(out_data !== 8'bx) begin
-      $display("[TEST FAILED] 7");
-      $finish;
-    end
+    `assert( out_data, 8'bz );
+    toggle_clk;
+
+    // with a valid address
+    in_addr <= 8'b00001111;
+    // with in_read_en = 0
+    in_read_en <= 0;
+    toggle_clk;
+    `assert( out_data, 8'bz );
+    toggle_clk;
+
+    // with in_read_en = 1
+    in_read_en <= 1;
+    toggle_clk;
+    `assert( out_data, 8'b10011001 );
+    toggle_clk;
+    in_read_en <= 0;
   end
-
-
 
   task toggle_clk;
     begin

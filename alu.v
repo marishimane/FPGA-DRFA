@@ -4,7 +4,7 @@ module alu (
   input clk, in_enable_out;
   input [7:0] in_A, in_B;
   input [2:0] op;
-  
+
   output [7:0] out;
   output [3:0] flags;
 
