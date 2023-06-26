@@ -5,16 +5,18 @@
     end
 
 module test;
-  reg clk = 0, write_en = 0;
-  reg [7:0] in_data, out_rx_data, out_ry_data;
+  reg clk = 0, read_en = 0, write_en = 0;
+  reg [7:0] in_data, out_r0_data, out_rx_data, out_ry_data;
   reg [2:0] in_rx_selector, in_ry_selector;
 
   register_bank registers(
     .clk(clk),
+    .read_en(read_en),
     .write_en(write_en),
     .in_rx_selector(in_rx_selector),
     .in_ry_selector(in_ry_selector),
     .in_data(in_data),
+    .out_r0_data(out_r0_data),
     .out_rx_data(out_rx_data),
     .out_ry_data(out_ry_data)
   );
@@ -32,14 +34,24 @@ module test;
     `assert( out_rx_data, 8'b10101010 );
 
     in_data <= 8'b11111111;
-    in_rx_selector <= 3'b001;
+    in_rx_selector <= 3'b000;
     toggle_clk;
     `assert( out_rx_data, 8'b11111111 );
 
-    in_ry_selector <= 3'b001;
+    in_ry_selector <= 3'b000;
+    toggle_clk;
     `assert( out_ry_data, 8'b11111111 );
 
     toggle_clk;
+    write_en <= 0;
+
+    // Read
+    `assert( out_r0_data, 8'bz );
+
+    read_en <= 1;
+    toggle_clk;
+    `assert( out_r0_data, 8'b11111111 );
+    read_en <= 0;
   end
 
   task toggle_clk;
