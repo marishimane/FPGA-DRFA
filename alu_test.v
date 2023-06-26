@@ -20,12 +20,13 @@ module test;
   reg [2:0] op;
   reg [3:0] flags;
   wire fO , fN , fZ , fC;
-  reg clk = 0;
+  reg clk = 0, enable_out = 1;
 
   alu ALU(
     .clk(clk),
     .in_A(r_a),
     .in_B(r_b),
+    .in_enable_out(enable_out),
     .out(out),
     .op(op),
     .flags(flags)
@@ -276,6 +277,11 @@ module test;
     toggle_clk;
 
     `assert(out, 8'b10100110, "shl a")
+
+    $display("########## TESTING ENABLE OUT ##########");
+    enable_out <= 0;
+    toggle_clk;
+    `assert(out, 'z, "enable out")
   end
 
 

@@ -1,5 +1,7 @@
-module alu ( clk, in_A, in_B, out, op, flags  ) ;
-  input clk;
+module alu (
+  clk, in_A, in_B, out, op, flags, in_enable_out
+) ;
+  input clk, in_enable_out;
   input [7:0] in_A, in_B;
   input [2:0] op;
   
@@ -46,6 +48,5 @@ module alu ( clk, in_A, in_B, out, op, flags  ) ;
   assign fC = ( op_w == add | op_w == sub )? r_out[8] : 0;
   assign fO = ( op_w == add )? ((r_a[7] == 0 && r_b[7] == 0 && r_out[7] == 1) | (r_a[7] == 1 && r_b[7] == 1 && r_out[7] == 0)? 1 : 0) : ( op_w == sub )? (r_a[7] == 0 && r_b[7] == 1 && r_out[7] == 1) | (r_a[7] == 1 && r_b[7] == 0 && r_out[7] == 0) : 0;
   assign flags = { fC, fN, fO, fZ };
-  assign out = r_out[7:0];
-
+  assign out = in_enable_out? r_out[7:0] : 'bz;
 endmodule
