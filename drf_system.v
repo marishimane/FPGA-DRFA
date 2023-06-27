@@ -1,3 +1,13 @@
+`include "alu.v"
+`include "instruction_register.v"
+`include "program_counter.v"
+`include "code_memory.v"
+`include "memory_bank_selector.v"
+`include "data_memory.v"
+`include "io_ports.v"
+`include "register_bank.v"
+`include "control_unit.v"
+
 module drf_system(
   clk, port_input, port_output
 );
@@ -20,14 +30,14 @@ module drf_system(
   wire [1:0] MBS_input, MBS_output;
   wire MBS_wr_enable;
   // Data Memory
-  wire [7:0] data_mem_address;
-  assign data_mem_address = { MBS_output, BUS }
+  wire [9:0] data_mem_address;
+  assign data_mem_address = { MBS_output, BUS };
   wire data_memory_read_enable, data_memory_wr_enable;
   // Code Memory
   wire [15:0] code_memory_out;
   // PC
   wire PC_load, PC_inc, PC_enOut;
-  wire [8:0] PC_out;
+  wire [8:0] PC_out, PC_in_value;
   // IR
   wire IR_load, IR_enOut;
   wire [15:0] IR_out;
@@ -39,22 +49,14 @@ module drf_system(
     .ir_enOut(IR_enOut),
     .in_value(code_memory_out),
     .out_value(IR_out)
-    // POR DEFINIR
-    // .out_opcode(IR_opcode),
-    // .out_rx(IR_rx_selector),
-    // .out_ry(IR_ry_selector),
-    // .out_code_address(IR_code_address),
-    // .out_immediate(IR_immediate),
-    // .out_bank_selector(MBS_input),
-    // ...
   );
 
   program_counter PC(
     .clk(clk),
-    .PC_load(PC_load),
-    .PC_inc(PC_inc),
-    .PC_enOut(PC_enOut),
-    .in_value(IR_code_address),
+    .pc_load(PC_load),
+    .pc_inc(PC_inc),
+    .pc_enOut(PC_enOut),
+    .in_value(PC_in_value),
     .out_value(PC_out)
   );
 
@@ -114,18 +116,18 @@ module drf_system(
 
   control_unit control_unit(
     // AJUSTAR CUANDO LA ARMEMOS
-    .in_ALU_flags(ALU_flags),
-    .in_IR(IR_out),
-    .out_ALU_enable_out(ALU_enable_out)
-    .out_PC_load(PC_load),
-    .out_PC_inc(PC_inc),
-    .out_PC_enable_out(PC_enOut),
-    .out_IR_enable_read(IR_enable_read),
-    .out_MBS_wr_enable(MBS_wr_enable),
+    .in_alu_flags(ALU_flags),
+    .in_ir(IR_out),
+    .out_alu_enable_out(ALU_enable_out),
+    .out_pc_load(PC_load),
+    .out_pc_inc(PC_inc),
+    .out_pc_enable_out(PC_enOut),
+    .out_ir_enable_read(IR_enOut),
+    .out_mbs_wr_enable(MBS_wr_enable),
     .out_data_memory_read_enable(data_memory_read_enable),
     .out_data_memory_wr_enable(data_memory_wr_enable),
-    .out_REG_write_en(REG_write_en),
-    .out_REG_read_en(REG_read_en)
+    .out_reg_write_en(REG_write_en),
+    .out_reg_read_en(REG_read_en)
   );
 
 endmodule
