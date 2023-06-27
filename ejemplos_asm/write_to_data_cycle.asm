@@ -7,7 +7,7 @@ init:
 	setr r2, 0x00 ; direccion inicial de la memoria de datos
 	selmb 00b     ; escribo en el primer memory bank
 loop:
-	writem r2
+	writem r2     ; escribo lo que está en R0 en la dirección dada por R2
 	add r0, r3    ; inc contador
 	add r2, r3    ; inc mem
 	cmp r0, r1    ; me fijo si me pase

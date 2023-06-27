@@ -9,7 +9,8 @@ localparam OUTPUT_PORT = 10'b1111111111;
 
 module test;
   reg clk = 0, in_write_en = 0, in_read_en = 0;
-  reg [3:0] in_data, out_data, in_port, out_port;
+  reg [3:0] in_port, out_port;
+  reg [7:0] in_data, out_data;
   reg [9:0] in_addr;
 
   io_ports ports(
@@ -34,24 +35,24 @@ module test;
     // with the incorrect port address
     in_addr <= 8'b01010101;
     toggle_clk;
-    `assert( out_data, 4'bz );
+    `assert( out_data, 8'bz );
     toggle_clk;
 
     // with the correct port address
     in_addr <= INPUT_PORT;
     toggle_clk;
-    `assert( out_data, 4'b1100 );
+    `assert( out_data, 8'b11111100 );
     toggle_clk;
     in_port <= 4'b0001;
-    `assert( out_data, 4'b1100 );
+    `assert( out_data, 8'b11111100 );
     toggle_clk;
-    `assert( out_data, 4'b0001 );
+    `assert( out_data, 8'b00000001 );
     toggle_clk;
 
     // Write from bus to port and read from port
     in_read_en <= 0;
     in_write_en <= 1;
-    in_data <= 4'b1100;
+    in_data <= 8'b10001100;
     // with the incorrect port address
     in_addr <= 8'b01010101;
     toggle_clk;

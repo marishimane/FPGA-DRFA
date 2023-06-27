@@ -4,7 +4,7 @@ init:
 	setr r1, 0x01 ; cte 1
 	selmb 11b     ; seteo el memory bank
 prog:
-	readm 0xFFFE  ; leo del puerto de entrada
-	not r0        ; calculo el inverso aditivo
-	add r0, r1
+	readm 0xFFFE  ; leo del puerto de entrada y lo guardo en R0
+	not r0        ;
+	add r0, r1    ; calculo el inverso aditivo y se guarda en R0
 	writem 0xFFFF ; escribo en el puerto de salida

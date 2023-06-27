@@ -23,8 +23,6 @@ module drf_system(
   wire [7:0] data_mem_address;
   assign data_mem_address = { MBS_output, BUS }
   wire data_memory_read_enable, data_memory_wr_enable;
-  // Ports
-
   // Code Memory
   wire [15:0] code_memory_out;
   // PC

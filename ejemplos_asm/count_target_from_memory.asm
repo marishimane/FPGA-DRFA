@@ -8,8 +8,8 @@ init:
 	setr r5, 0x01  ; cte 1
 	selmb 01b      ; asumo que esta en este memory bank (al menos para la ver 1)
 loop:
-	readm r2
-	cmp r0, r4     ; en r1 esta lo que lei de memoria
+	readm r2       ; lee en R0 lo que está en la dirección de memoria dada por R2
+	cmp r0, r4     ; en r0 esta lo que lei de memoria
 	jmpneq finloop ; si no es el target sigo loopeando
 	add r1, r5     ; inc contador
 finloop:
