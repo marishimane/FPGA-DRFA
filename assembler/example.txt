@@ -18,4 +18,6 @@ start |00| ADD R1 , R2
       |11| WRITE_TO_MEM R1
       |12| WRITE_TO_MEM [ R1 ]
       |13| READ_FROM_MEM 0xFF
-      |14| ADD R1 , R2
+      |14| GET_FLAGS R2
+      |15| SEL_MEM_BANK 0x03
+ data |16| ADD R1 , R2

@@ -79,7 +79,7 @@ type_RR = [
     "COPY_REG"
 ]
 # B
-type_R  = ["NOT","SHIFT_RIGHT","SHIFT_LEFT"]
+type_R  = ["NOT","SHIFT_RIGHT","SHIFT_LEFT", "GET_FLAGS"]
 # C
 type_DM = ["JUMP","JUMP_EQ","JUMP_NEQ","CALL"]
 # D
@@ -88,6 +88,8 @@ type_RI  = ["SET_REG"]
 type_NOPARAM  = ["RETURN"]
 # F
 type_MEMORY  = ["WRITE_TO_MEM", "READ_FROM_MEM"]
+# G
+type_MEM_BANK  = ["SEL_MEM_BANK"]
 
 opcodes = {"ADD":           0b00000,
            "SUB":           0b00001,
@@ -205,6 +207,8 @@ def buidInst(d):
         n = n + (d["MEM_OPCODE"] << 8)
     if "MEM_REG" in d:
         n = n + (d["MEM_REG"] << 5)
+    if "MEM_BANK" in d:
+        n = n + (d["MEM_BANK"] << 9)
     if "M" in d:
         n = n + (d["M"])
     if "I" in d:
@@ -318,7 +322,18 @@ def parseInstructions(instructions,labels):
                     raise ValueError("Error: Invalid instruction \"" + i[0] + "\"")
                     break
 
-
+            elif i[0] in type_MEM_BANK:
+                if len(i) > 0:
+                    imm = parseNum(i[1]) 
+                    if imm <= 3:
+                        n = buidInst({"O":opcodes[i[0]], "MEM_BANK": imm})
+                        appendParse16(parseBytes,parseHuman,i,n)
+                    else:
+                        raise ValueError("Error: Invalid value range for SELECT_MEM_BANK, it should be between [0-3]")
+                        break
+                else:
+                    raise ValueError("Error: Invalid instruction \"" + i[0] + "\"")
+                    break
 
             # 
             # SET Rx, M
