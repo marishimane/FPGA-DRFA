@@ -1,23 +1,23 @@
-start |00| ADD R1 , R2
-      |01| SUB R1 , R3
-      |02| OR R2 , R3
-      |03| AND R2 , R7
-      |04| NOT R3
-      |05| COMPARE R3 , R4
-      |06| SHIFT_RIGHT R3
-      |07| SHIFT_LEFT R3
-      |08| COPY_REG R1 , R2
-      |09| SET_REG R1 , 0xFF
-      |0a| JUMP data
-      |0b| JUMP_EQ data
-      |0c| JUMP_NEQ data
-      |0d| CALL data
-      |0e| RETURN
-      |0f| WRITE_TO_MEM 0xFF
-      |10| WRITE_TO_MEM [ 0xFF ]
-      |11| WRITE_TO_MEM R1
-      |12| WRITE_TO_MEM [ R1 ]
-      |13| READ_FROM_MEM 0xFF
-      |14| GET_FLAGS R2
-      |15| SEL_MEM_BANK 0x03
- data |16| ADD R1 , R2
+start |00| add r1 , r2
+      |01| sub R1 , R3
+      |02| or R2 , R3
+      |03| and R2 , R7
+      |04| not R3
+      |05| cmp R3 , R4
+      |06| shr R3
+      |07| shl R3
+      |08| cpyr R1 , R2
+      |09| setr R1 , 0xFF
+      |0a| jmp data
+      |0b| jmpeq data
+      |0c| jmpneq data
+      |0d| call data
+      |0e| ret
+      |0f| writem 0xFF
+      |10| writem [ 0xFF ]
+      |11| writem R1
+      |12| writem [ R1 ]
+      |13| readm 0xFF
+      |14| gflags R2
+      |15| selmb 0x03
+ data |16| add R1 , R2

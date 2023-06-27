@@ -71,50 +71,50 @@ def tokenizator(filename):
 
 # A
 type_RR = [
-    "ADD",
-    "SUB",
-    "OR",
-    "AND",
-    "COMPARE",
-    "COPY_REG"
+    "add",
+    "sub",
+    "or",
+    "and",
+    "cmp",
+    "cpyr"
 ]
 # B
-type_R  = ["NOT","SHIFT_RIGHT","SHIFT_LEFT", "GET_FLAGS"]
+type_R  = ["not","shr","shl", "gflags"]
 # C
-type_DM = ["JUMP","JUMP_EQ","JUMP_NEQ","CALL"]
+type_DM = ["jmp","jmpeq","jmpneq","call"]
 # D
-type_RI  = ["SET_REG"]
+type_RI  = ["setr"]
 # E
-type_NOPARAM  = ["RETURN"]
+type_NOPARAM  = ["ret"]
 # F
-type_MEMORY  = ["WRITE_TO_MEM", "READ_FROM_MEM"]
+type_MEMORY  = ["writem", "readm"]
 # G
-type_MEM_BANK  = ["SEL_MEM_BANK"]
+type_MEM_BANK  = ["selmb"]
 
-opcodes = {"ADD":           0b00000,
-           "SUB":           0b00001,
-           "OR":            0b00010,
-           "AND":           0b00011,
-           "NOT":           0b00100,
-           "COMPARE":       0b00101,
-           "SHIFT_RIGHT":   0b00110,
-           "SHIFT_LEFT":    0b00111,
+opcodes = {"add":           0b00000,
+           "sub":           0b00001,
+           "or":            0b00010,
+           "and":           0b00011,
+           "not":           0b00100,
+           "cmp":           0b00101,
+           "shr":           0b00110,
+           "shl":           0b00111,
 
-           "COPY_REG":      0b01000,
-           "SET_REG":       0b01001,
+           "cpyr":          0b01000,
+           "setr":          0b01001,
 
-           "JUMP":          0b10000,
-           "JUMP_EQ":       0b10001,
-           "JUMP_NEQ":      0b10010,
+           "jmp":           0b10000,
+           "jmpeq":         0b10001,
+           "jmpneq":        0b10010,
 
-           "CALL":          0b10100,
-           "RETURN":        0b10101,
+           "call":          0b10100,
+           "ret":           0b10101,
 
-           "WRITE_TO_MEM":  0b11100,
-           "READ_FROM_MEM": 0b11101,
+           "writem":        0b11100,
+           "readm":         0b11101,
 
-           "GET_FLAGS":     0b11000,
-           "SEL_MEM_BANK":  0b11001
+           "gflags":        0b11000,
+           "selmb":         0b11001
 }
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
@@ -148,7 +148,7 @@ def removeLabels(tokens,bits):
     return instructions,labels
 
 def reg2num(reg):
-    if reg[0]=="R":
+    if reg[0] in ["R", "r"]:
         try:
             val = int(reg[1:])
         except ValueError:
@@ -282,7 +282,7 @@ def parseInstructions(instructions,labels):
                     operand = i[1]
 
                     # es un registro R0-R7
-                    if(operand[0] == "R"):
+                    if(operand[0] in ["R", "r"]):
                         n = buidInst({
                             "O":opcodes[i[0]],
                             "MEM_OPCODE": 0b010,
@@ -302,7 +302,7 @@ def parseInstructions(instructions,labels):
                     operand = i[2]
 
                     # es un registro indirecto [R0-R7]
-                    if(operand[0] == "R"):
+                    if(operand[0] in ["R", "r"]):
                         n = buidInst({
                             "O":opcodes[i[0]],
                             "MEM_OPCODE": 0b011,
@@ -335,22 +335,6 @@ def parseInstructions(instructions,labels):
                     raise ValueError("Error: Invalid instruction \"" + i[0] + "\"")
                     break
 
-            # 
-            # SET Rx, M
-            # elif i[0] in type_RI:
-            #     if i[2]==",":
-            #         n = buidInst({"O":opcodes[i[0]], "X":reg2num(i[1]), "M":mem2num(i[3],labels)})
-            #         appendParse16(parseBytes,parseHuman,i,n)
-            #     else:
-            #         raise ValueError("Error: Invalid instruction \"" + i[0] + "\"")
-            #         break
-                
-            # DB M
-            # elif i[0] in def_DB:
-            #     parseHuman.append( [len(parseBytes),i] )
-            #     parseBytes.append( mem2num(i[1],labels) )
-                
-            ##
             else:
                 continue
                 raise ValueError("Error: Unknown instruction \"" + i[0] + "\"")
