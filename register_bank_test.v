@@ -6,7 +6,7 @@
 
 module test;
   reg clk = 0, read_en = 0, write_en = 0;
-  reg [7:0] in_data, out_r0_data, out_rx_data, out_ry_data;
+  reg [7:0] in_data, out_bus_data, out_rx_data, out_ry_data;
   reg [2:0] in_rx_selector, in_ry_selector;
 
   register_bank registers(
@@ -16,7 +16,7 @@ module test;
     .in_rx_selector(in_rx_selector),
     .in_ry_selector(in_ry_selector),
     .in_data(in_data),
-    .out_r0_data(out_r0_data),
+    .out_bus_data(out_bus_data),
     .out_rx_data(out_rx_data),
     .out_ry_data(out_ry_data)
   );
@@ -45,12 +45,13 @@ module test;
     toggle_clk;
     write_en <= 0;
 
-    // Read
-    `assert( out_r0_data, 8'bz );
+    // Read from Ry selector in the bus
+    `assert( out_bus_data, 8'bz );
 
     read_en <= 1;
     toggle_clk;
-    `assert( out_r0_data, 8'b11111111 );
+    // Ry selector points to R0
+    `assert( out_bus_data, 8'b11111111 );
     read_en <= 0;
   end
 

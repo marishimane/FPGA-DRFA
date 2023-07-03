@@ -1,13 +1,13 @@
 module register_bank(
   clk, read_en, write_en, in_rx_selector, in_ry_selector,
-  in_data, out_r0_data, out_rx_data, out_ry_data
+  in_data, out_bus_data, out_rx_data, out_ry_data
 );
 
   input clk, read_en, write_en;
   input [2:0] in_rx_selector, in_ry_selector;
   input [7:0] in_data;
 
-  output [7:0] out_r0_data, out_rx_data, out_ry_data;
+  output [7:0] out_bus_data, out_rx_data, out_ry_data;
 
   reg [7:0] registers [0:7];
 
@@ -24,7 +24,7 @@ module register_bank(
     end
   end
 
-  assign out_r0_data = read_en? registers[0] : 'bz; // Cambiar este por lo que elijas en Ry
+  assign out_bus_data = read_en? registers[in_ry_selector] : 'bz;
   assign out_rx_data = registers[in_rx_selector];
   assign out_ry_data = registers[in_ry_selector];
 endmodule
