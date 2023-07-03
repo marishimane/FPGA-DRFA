@@ -48,10 +48,17 @@ module test;
     // Read from Ry selector in the bus
     `assert( out_bus_data, 8'bz );
 
-    read_en <= 1;
+    // write to R3
+    write_en <= 1;
+    in_data <= 8'b00000001;
+    in_rx_selector <= 3'b011;
     toggle_clk;
-    // Ry selector points to R0
-    `assert( out_bus_data, 8'b11111111 );
+    // read R3 from the bus
+    write_en <= 0;
+    read_en <= 1;
+    in_ry_selector <= 3'b011;
+    toggle_clk;
+    `assert( out_bus_data, 8'b00000001 );
     read_en <= 0;
   end
 
