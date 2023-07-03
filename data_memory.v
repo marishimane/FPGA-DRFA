@@ -5,6 +5,8 @@ module data_memory(
   input clk;
 
   input [9:0] in_addr;
+  // Hacer esto un registro en algo por fuera y agregar una señal para escribirlo
+  // Sería para la data memory y para el io ports
   input in_write_en, in_read_en;
 
   input [7:0] in_data;
@@ -14,7 +16,7 @@ module data_memory(
   reg [7:0] read_data;
 
   initial begin
-      read_data <= 8'h00;
+    read_data <= 8'h00;
   end
 
   localparam in_port_addr = 10'b1111111110;

@@ -24,7 +24,7 @@ module register_bank(
     end
   end
 
-  assign out_r0_data = read_en? registers[0] : 'bz;
+  assign out_r0_data = read_en? registers[0] : 'bz; // Cambiar este por lo que elijas en Ry
   assign out_rx_data = registers[in_rx_selector];
   assign out_ry_data = registers[in_ry_selector];
 endmodule
