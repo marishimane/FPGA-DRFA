@@ -109,7 +109,7 @@ module drf_system(
     .in_rx_selector(REG_rx_selector),
     .in_ry_selector(REG_ry_selector),
     .in_data(BUS),
-    .out_r0_data(BUS),
+    .out_bus_data(BUS),
     .out_rx_data(REG_rx),
     .out_ry_data(REG_ry)
   );
