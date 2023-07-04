@@ -3,8 +3,7 @@
 `include "program_counter.v"
 `include "code_memory.v"
 `include "memory_bank_selector.v"
-`include "data_memory.v"
-`include "io_ports.v"
+`include "data_memory_manager.v"
 `include "register_bank.v"
 `include "control_unit.v"
 
@@ -32,7 +31,7 @@ module drf_system(
   // Data Memory
   wire [9:0] data_mem_address;
   assign data_mem_address = { MBS_output, BUS };
-  wire data_memory_read_enable, data_memory_wr_enable;
+  wire data_memory_read_enable, data_memory_wr_enable, data_memory_addr_wr_enable;
   // Code Memory
   wire [15:0] code_memory_out;
   // PC
@@ -72,21 +71,13 @@ module drf_system(
     .out_data(MBS_output)
   );
 
-  data_memory data_memory(
+  data_memory_manager data_memory_manager(
     .clk(clk),
-    .in_addr(data_mem_address),
     .in_write_en(data_memory_wr_enable),
     .in_read_en(data_memory_read_enable),
+    .in_addr_write_en(data_memory_addr_wr_enable),
     .in_data(BUS),
-    .out_data(BUS)
-  );
-
-  io_ports ports(
-    .clk(clk),
     .in_addr(data_mem_address),
-    .in_write_en(data_memory_wr_enable),
-    .in_read_en(data_memory_read_enable),
-    .in_data(BUS),
     .out_data(BUS),
     .in_port(port_input),
     .out_port(port_output)
@@ -126,6 +117,7 @@ module drf_system(
     .out_mbs_wr_enable(MBS_wr_enable),
     .out_data_memory_read_enable(data_memory_read_enable),
     .out_data_memory_wr_enable(data_memory_wr_enable),
+    .out_data_memory_addr_wr_enable(data_memory_addr_wr_enable),
     .out_reg_write_en(REG_write_en),
     .out_reg_read_en(REG_read_en)
   );
