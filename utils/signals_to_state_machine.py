@@ -17,6 +17,7 @@ signals = {
    "reset_micro_pc": flag_for_index(10),
    "cu_out": flag_for_index(11),
    "mem_addr_write_en": flag_for_index(12),
+   "decode": flag_for_index(13),
 }
 
 state_machine = [
@@ -24,6 +25,7 @@ state_machine = [
     ["pc_enable_out", "ir_enable_read", "pc_inc"],
 
     # Decode
+    ["decode"],
 
     # Execute
     # Op en la ALU
@@ -85,9 +87,11 @@ def generate_state_machine(show_address):
     width = len(signals)
     f = '{0:0' + str(width) + 'b}'
     for i, row in enumerate(state_machine):
-        instruction = f.format(generate_memory_row(row))  + "b"
+        instruction = f.format(generate_memory_row(row))
         if(show_address):
             print(i, end=" - ")
         print(instruction)
 
 generate_state_machine(False)
+print(len(signals))
+print(len(state_machine))
