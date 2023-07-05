@@ -18,57 +18,67 @@ signals = {
    "cu_out": flag_for_index(11),
    "mem_addr_write_en": flag_for_index(12),
    "decode": flag_for_index(13),
+   "flags_en_out": flag_for_index(14),
 }
 
 state_machine = [
     # Fetch
-    ["pc_enable_out", "ir_enable_read", "pc_inc"],
+    ["pc_enable_out", "ir_enable_read"],
 
     # Decode
     ["decode"],
 
     # Execute
-    # Op en la ALU
+    #2  Op en la ALU
     ["alu_enable_out", "reg_write_en"],
-    ["reset_micro_pc"],
+    ["reset_micro_pc", "pc_inc"],
 
     # Copy reg
     ["reg_write_en", "reg_read_en"],
-    ["reset_micro_pc"],
+    ["reset_micro_pc", "pc_inc"],
 
     # Jumps
     ["pc_load"],
     ["reset_micro_pc"],
 
+    # NotJump
+    ["reset_micro_pc", "pc_inc"],
+
+    #9 Get flags
+    ["flags_en_out", "reg_write_en"],
+    ["reset_micro_pc", "pc_inc"],
+
     # Setr
     ["reg_write_en"],
-    ["reset_micro_pc"],
+    ["reset_micro_pc", "pc_inc"],
+
+
 
     # Write to memory
     # Inmediato - write M => M <= R0
     ["cu_out", "mem_addr_write_en"],
     ["reg_read_en", "data_memory_wr_enable"],
-    ["reset_micro_pc"],
+    ["reset_micro_pc", "pc_inc"],
 
     # Indirecto a memoria - write [M] => [M] <= R0
     ["cu_out", "mem_addr_write_en"],
     ["data_memory_read_enable", "mem_addr_write_en"],
     ["reg_read_en", "data_memory_wr_enable"],
-    ["reset_micro_pc"],
+    ["reset_micro_pc", "pc_inc"],
 
     # Indirecto a memoria - write [M] => [M] <= R0
     # Directo a registro - write Ry => [Ry] <= R0
     ["reg_read_en", "mem_addr_write_en"],
     ["data_memory_read_enable", "mem_addr_write_en"],
     ["reg_read_en", "data_memory_wr_enable"],
-    ["reset_micro_pc"],
+    ["reset_micro_pc", "pc_inc"],
 
 
     # Indirecto a registro - write [Ry] => [registros[Ry]] <= R0
     ["reg_read_en"],
     ["reg_read_en", "data_memory_wr_enable"],
     ["reg_read_en", "data_memory_wr_enable"],
-    ["reset_micro_pc"],
+    ["reset_micro_pc", "pc_inc"],
 
 
     # call m

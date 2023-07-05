@@ -48,6 +48,7 @@ module drf_system(
     .ir_enOut(IR_enOut),
     .in_value(code_memory_out),
     .out_value(IR_out)
+    // TODO: Pasarle el imm al PC
   );
 
   program_counter PC(
@@ -55,7 +56,7 @@ module drf_system(
     .pc_load(PC_load),
     .pc_inc(PC_inc),
     .pc_enOut(PC_enOut),
-    .in_value(PC_in_value),
+    .in_value(PC_in_value), // TODO: Pasarle directo el imm del IR
     .out_value(PC_out)
   );
 
@@ -97,8 +98,8 @@ module drf_system(
     .clk(clk),
     .read_en(REG_read_en),
     .write_en(REG_write_en),
-    .in_rx_selector(IR_out[]),
-    .in_ry_selector(REG_ry_selector),
+    .in_rx_selector(IR_out[]), // TODO: CABLEAR DIRECTO AL IR
+    .in_ry_selector(REG_ry_selector), // TODO: CABLEAR DIRECTO AL IR
     .in_data(BUS),
     .out_bus_data(BUS),
     .out_rx_data(REG_rx),

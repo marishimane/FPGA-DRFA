@@ -43,7 +43,8 @@ module control_unit_test;
     .out_data_memory_wr_enable(data_memory_wr_enable),
     .out_data_memory_addr_wr_enable(data_memory_addr_wr_enable),
     .out_reg_write_en(REG_write_en),
-    .out_reg_read_en(REG_read_en)
+    .out_reg_read_en(REG_read_en),
+    .out_cu_out(BUS)
   );
 
   initial begin
@@ -54,18 +55,63 @@ module control_unit_test;
     // TODO agregar asserts y testear
     // todas las operaciones de la alu
     // o solamente que arranque en
-    // 000, 001
+
+    // Op ALU
+    // add 000, 001
+    // IR_out = 16'b0;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+
+    // // Copy register
+    // IR_out = 16'b01000_010_001_00000;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+
+    // // Jump incondicional
+    // IR_out = 16'b10000_111110000_00;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+
+    // // Jmpeq
+    // ALU_flags = 4'b0001;
+    // IR_out = 16'b0;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // IR_out = 16'b10001_111110000_00;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // // Jmpneq
+    // IR_out = 16'b10010_111110000_00;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+
+    // getflags
+    ALU_flags = 4'b1001;
     IR_out = 16'b0;
     toggle_clk;
     toggle_clk;
     toggle_clk;
     toggle_clk;
+    IR_out = 16'b11000_100_00000000;
+    toggle_clk;
+    toggle_clk;
+    toggle_clk;
+    toggle_clk;
+    toggle_clk;
 
-    IR_out = 16'b01000_010_001_00000;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
+    
   end
 
 
