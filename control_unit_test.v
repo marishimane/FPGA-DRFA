@@ -30,6 +30,7 @@ module control_unit_test;
   reg [15:0] IR_out;
 
   control_unit CONTROL_UNIT(
+    .clk(clk),
     .in_alu_flags(ALU_flags),
     .in_ir(IR_out),
     .out_alu_enable_out(ALU_enable_out),
@@ -50,6 +51,20 @@ module control_unit_test;
     $dumpfile("dump.vcd");
     $dumpvars(1);
 
+    // TODO agregar asserts y testear
+    // todas las operaciones de la alu
+    // o solamente que arranque en
+    // 000, 001
+    IR_out = 16'b0;
+    toggle_clk;
+    toggle_clk;
+    toggle_clk;
+    toggle_clk;
+
+    IR_out = 16'b01000_010_001_00000;
+    toggle_clk;
+    toggle_clk;
+    toggle_clk;
     toggle_clk;
   end
 

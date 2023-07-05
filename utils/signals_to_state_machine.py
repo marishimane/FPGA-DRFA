@@ -32,6 +32,10 @@ state_machine = [
     ["alu_enable_out", "reg_write_en"],
     ["reset_micro_pc"],
 
+    # Copy reg
+    ["reg_write_en", "reg_read_en"],
+    ["reset_micro_pc"],
+
     # Jumps
     ["pc_load"],
     ["reset_micro_pc"],

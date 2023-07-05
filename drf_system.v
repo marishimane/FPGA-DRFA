@@ -97,7 +97,7 @@ module drf_system(
     .clk(clk),
     .read_en(REG_read_en),
     .write_en(REG_write_en),
-    .in_rx_selector(REG_rx_selector),
+    .in_rx_selector(IR_out[]),
     .in_ry_selector(REG_ry_selector),
     .in_data(BUS),
     .out_bus_data(BUS),
