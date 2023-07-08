@@ -25,7 +25,8 @@ module drf_system(
   wire ALU_enable_out;
   wire [3:0] ALU_flags;
   // Memory Bank Selector (MBS)
-  wire [1:0] MBS_input, MBS_output;
+  wire [1:0] MBS_input = IR_out[10:9];
+  wire [1:0] MBS_output;
   wire MBS_wr_enable;
   // Data Memory
   wire [9:0] data_mem_address;
@@ -52,7 +53,7 @@ module drf_system(
     .in_value(
       (IR_out[15:11] == 5'b10101) ? stack_out_pc : // Es un retSubrutine
       IR_out[10:2] // Sale del inmediato del IR
-    ), // TODO: Pasarle directo el imm del IR
+    ),
     .out_value(PC_out)
   );
 
@@ -64,7 +65,7 @@ module drf_system(
 
   memory_bank_selector memory_bank_selector(
     .write_en(MBS_wr_enable),
-    .in_data(MBS_input), // TODO: Cablearle los 2 bits directo del IR
+    .in_data(MBS_input),
     .out_data(MBS_output)
   );
 
