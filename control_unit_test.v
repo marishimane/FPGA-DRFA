@@ -28,11 +28,15 @@ module control_unit_test;
   // IR
   reg IR_load, IR_enOut;
   reg [15:0] IR_out;
+  // Stack
+  reg stack_push_en, stack_pop_en;
+  reg [3:0] stack_flags, out_flags;
 
   control_unit CONTROL_UNIT(
     .clk(clk),
     .in_alu_flags(ALU_flags),
     .in_ir(IR_out),
+    .in_stack_flags(stack_flags),
     .out_alu_enable_out(ALU_enable_out),
     .out_pc_load(PC_load),
     .out_pc_inc(PC_inc),
@@ -44,7 +48,10 @@ module control_unit_test;
     .out_data_memory_addr_wr_enable(data_memory_addr_wr_enable),
     .out_reg_write_en(REG_write_en),
     .out_reg_read_en(REG_read_en),
-    .out_cu_out(BUS)
+    .out_cu_out(BUS),
+    .out_stack_push_en(stack_push_en),
+    .out_stack_pop_en(stack_pop_en),
+    .out_flags(out_flags)
   );
 
   initial begin
@@ -66,6 +73,14 @@ module control_unit_test;
 
     // // Copy register
     // IR_out = 16'b01000_010_001_00000;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+
+    // // Set register
+    // IR_out = 16'b01001_011_11110000;
+    // toggle_clk;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
@@ -97,21 +112,54 @@ module control_unit_test;
     // toggle_clk;
     // toggle_clk;
 
-    // getflags
-    ALU_flags = 4'b1001;
-    IR_out = 16'b0;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    IR_out = 16'b11000_100_00000000;
+    // // getflags
+    // ALU_flags = 4'b1001;
+    // IR_out = 16'b0;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // IR_out = 16'b11000_100_00000000;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+
+    // // selectMemoryBank
+    // IR_out = 16'b11001_10_000000000;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+
+    // // callSubrutine
+    // ALU_flags = 4'b1001;
+    // IR_out = 16'b0;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // IR_out = 16'b10100_111100001_00;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+
+    // ReturnSubrutine
+    stack_flags = 4'b0101;
+    IR_out = 16'b10101_00000100000;
     toggle_clk;
     toggle_clk;
     toggle_clk;
     toggle_clk;
     toggle_clk;
 
-    
+
+
   end
 
 

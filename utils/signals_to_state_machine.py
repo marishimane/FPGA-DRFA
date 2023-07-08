@@ -19,6 +19,10 @@ signals = {
    "mem_addr_write_en": flag_for_index(12),
    "decode": flag_for_index(13),
    "flags_en_out": flag_for_index(14),
+   "imm_en_out": flag_for_index(15),
+   "push_stack": flag_for_index(16),
+   "pop_stack": flag_for_index(17),
+
 }
 
 state_machine = [
@@ -48,11 +52,22 @@ state_machine = [
     ["flags_en_out", "reg_write_en"],
     ["reset_micro_pc", "pc_inc"],
 
-    # Setr
-    ["reg_write_en"],
+    #11 Select Mem Bank
+    ["mbs_wr_enable"],
     ["reset_micro_pc", "pc_inc"],
 
+    #13 Setr
+    ["reg_write_en", "imm_en_out"],
+    ["reset_micro_pc", "pc_inc"],
 
+    #15 callSubrutine
+    ["push_stack", "pc_enable_out"],
+    ["pc_load"],
+    ["reset_micro_pc"],
+
+    #18 returnSubrutine
+    ["pop_stack", "pc_load"],
+    ["reset_micro_pc"],
 
     # Write to memory
     # Inmediato - write M => M <= R0
@@ -79,14 +94,6 @@ state_machine = [
     ["reg_read_en", "data_memory_wr_enable"],
     ["reg_read_en", "data_memory_wr_enable"],
     ["reset_micro_pc", "pc_inc"],
-
-
-    # call m
-
-    # ret m
-
-    # gflags
-    ["cu_out", "reg_read_en"],
 ]
 
 
