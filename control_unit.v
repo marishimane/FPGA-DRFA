@@ -1,4 +1,6 @@
 `include "instruction_register.v"
+`include "stack.v"
+`include "program_counter.v"
 
 // control signals
 localparam alu_enable_out = 0;
@@ -37,30 +39,29 @@ localparam WRITE_MEMORY_INDIRECT_REGISTER_EXECUTE = 33;
 
 module control_unit(
   clk,
-  in_alu_flags, in_ir, in_stack_flags, out_alu_enable_out, out_pc_load,
+  in_alu_flags, in_ir, out_alu_enable_out,
  
   // Values
-  out_cu_out, out_flags, out_ir,
+  out_cu_out, out_flags, out_ir, out_pc,
 
   // Control signals
-  out_pc_inc, out_pc_enable_out,
   out_mbs_wr_enable, out_data_memory_read_enable, out_data_memory_wr_enable,
   out_data_memory_addr_wr_enable, out_reg_write_en, out_reg_read_en,
   out_reset_micro_pc, //TODO volar
-  out_stack_push_en, out_stack_pop_en,
 );
   input clk;
-  input [3:0] in_alu_flags, in_stack_flags;
+  input [3:0] in_alu_flags;
   input [15:0] in_ir;
 
   output [15:0] out_ir;
   output [7:0] out_cu_out;
   output [3:0] out_flags;
+  output [8:0] out_pc;
 
-  output out_alu_enable_out, out_pc_load, out_pc_inc, out_pc_enable_out,
+  output out_alu_enable_out,
     out_mbs_wr_enable, out_data_memory_read_enable,
     out_data_memory_wr_enable, out_data_memory_addr_wr_enable, out_reg_write_en, out_reg_read_en,
-    out_reset_micro_pc, out_stack_push_en, out_stack_pop_en;
+    out_reset_micro_pc;
 
   // State machine
   reg [16:0] mem [0:35]; // TODO: read from a file as variables
@@ -71,12 +72,45 @@ module control_unit(
 
   // Internal control signals
   wire cs_ir_enable_write = mem[micro_pc][ir_enable_write];
+  wire cs_stack_push_en = mem[micro_pc][push_stack];
+  wire cs_stack_pop_en = mem[micro_pc][pop_stack];
+  wire cs_pc_load = mem[micro_pc][pc_load];
+  wire cs_pc_inc = mem[micro_pc][pc_inc];
+  wire cs_pc_en_out = mem[micro_pc][pc_enable_out];
+
+  // Internal values 
+
+  wire [8:0] PC_out;
+  wire [8:0] stack_out_pc;
+  wire [3:0] stack_out_flags;
 
   instruction_register IR(
     .clk(clk),
     .ir_load(cs_ir_enable_write),
     .in_value(in_ir),
     .out_value(internal_out_ir)
+  );
+
+  program_counter PC(
+    .clk(clk),
+    .pc_load(cs_pc_load),
+    .pc_inc(cs_pc_inc),
+    .pc_enOut(cs_pc_en_out),
+    .in_value(
+      (internal_out_ir[15:11] == 5'b10101) ? stack_out_pc : // Es un retSubrutine
+      internal_out_ir[10:2] // Sale del inmediato del IR
+    ),
+    .out_value(PC_out)
+  );
+
+  stack stack(
+    .clk(clk),
+    .push_en(cs_stack_push_en),
+    .pop_en(cs_stack_pop_en),
+    .in_pc(PC_out),
+    .in_flags(flags),
+    .out_pc(stack_out_pc),
+    .out_flags(stack_out_flags)
   );
 
   initial begin
@@ -97,7 +131,7 @@ module control_unit(
 
     // Pisar flags si el stack hace pop
     if(mem[micro_pc][pop_stack] == 1'b1) begin
-      flags <= in_stack_flags;
+      flags <= stack_out_flags;
     end
 
     // Decode
@@ -188,9 +222,6 @@ module control_unit(
   end
 
   assign out_alu_enable_out = mem[micro_pc][alu_enable_out];
-  assign out_pc_load = mem[micro_pc][pc_load];
-  assign out_pc_inc = mem[micro_pc][pc_inc];
-  assign out_pc_enable_out = mem[micro_pc][pc_enable_out];
   assign out_mbs_wr_enable = mem[micro_pc][mbs_wr_enable];
   assign out_data_memory_addr_wr_enable = mem[micro_pc][data_memory_addr_wr_enable];
   assign out_data_memory_read_enable = mem[micro_pc][data_memory_read_enable];
@@ -203,9 +234,9 @@ module control_unit(
                       mem[micro_pc][imm_en_out]     ? internal_out_ir[7:0] :
                       8'bz ;
   assign out_flags = flags;
-  assign out_stack_push_en = (mem[micro_pc][push_stack]) ? 1'b1 : 1'b0;
-  assign out_stack_pop_en = (mem[micro_pc][pop_stack]) ? 1'b1 : 1'b0;
 
   assign out_ir = internal_out_ir;
+
+  assign out_pc = PC_out;
 
 endmodule

@@ -45,22 +45,17 @@ module control_unit_test;
     .clk(clk),
     .in_alu_flags(ALU_flags),
     .in_ir(in_ir),
-    .in_stack_flags(stack_flags),
     .out_ir(out_ir),
     .out_flags(out_flags),
     .out_cu_out(BUS),
+    .out_pc(PC_out),
     .out_alu_enable_out(ALU_enable_out),
-    .out_pc_load(PC_load),
-    .out_pc_inc(PC_inc),
-    .out_pc_enable_out(PC_enOut),
     .out_mbs_wr_enable(MBS_wr_enable),
     .out_data_memory_read_enable(data_memory_read_enable),
     .out_data_memory_wr_enable(data_memory_wr_enable),
     .out_data_memory_addr_wr_enable(data_memory_addr_wr_enable),
     .out_reg_write_en(REG_write_en),
-    .out_reg_read_en(REG_read_en),
-    .out_stack_push_en(stack_push_en),
-    .out_stack_pop_en(stack_pop_en)
+    .out_reg_read_en(REG_read_en)
   );
 
   initial begin

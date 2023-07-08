@@ -1,11 +1,9 @@
 `include "alu.v"
-`include "program_counter.v"
 `include "code_memory.v"
 `include "memory_bank_selector.v"
 `include "data_memory_manager.v"
 `include "register_bank.v"
 `include "control_unit.v"
-`include "stack.v"
 
 module drf_system(
   clk, port_input, port_output
@@ -34,32 +32,16 @@ module drf_system(
   wire data_memory_read_enable, data_memory_wr_enable, data_memory_addr_wr_enable;
   // Code Memory
   wire [15:0] code_memory_out;
+  wire [15:0] code_memory_addr_in;
   // PC
-  wire PC_load, PC_inc, PC_enOut;
   wire [8:0] PC_out;
   wire [15:0] IR_out;
   // Stack
-  wire stack_push_en;
-  wire stack_pop_en;
   wire [3:0] CU_out_flags;
-  wire [8:0] stack_out_pc;
-  wire [3:0] stack_out_flags;
-
-  program_counter PC(
-    .clk(clk),
-    .pc_load(PC_load),
-    .pc_inc(PC_inc),
-    .pc_enOut(PC_enOut),
-    .in_value(
-      (IR_out[15:11] == 5'b10101) ? stack_out_pc : // Es un retSubrutine
-      IR_out[10:2] // Sale del inmediato del IR
-    ),
-    .out_value(PC_out)
-  );
 
   code_memory code_memory(
     .clk(clk),
-    .in_addr(PC_out),
+    .in_addr(code_memory_addr_in),
     .out_data(code_memory_out)
   );
 
@@ -108,33 +90,17 @@ module drf_system(
     .clk(clk),
     .in_alu_flags(ALU_flags),
     .in_ir(code_memory_out),
-    .in_stack_flags(stack_out_flags),
     .out_ir(IR_out),
     .out_flags(CU_out_flags),
     .out_cu_out(BUS),
+    .out_pc(code_memory_addr_in),
     .out_alu_enable_out(ALU_enable_out),
-    .out_pc_load(PC_load),
-    .out_pc_inc(PC_inc),
-    .out_pc_enable_out(PC_enOut),
     .out_mbs_wr_enable(MBS_wr_enable),
     .out_data_memory_read_enable(data_memory_read_enable),
     .out_data_memory_wr_enable(data_memory_wr_enable),
     .out_data_memory_addr_wr_enable(data_memory_addr_wr_enable),
     .out_reg_write_en(REG_write_en),
-    .out_reg_read_en(REG_read_en),
-    .out_stack_push_en(stack_push_en),
-    .out_stack_pop_en(stack_pop_en)
-  );
-
-  // TODO: chequear
-  stack stack(
-    .clk(clk),
-    .push_en(stack_push_en),
-    .pop_en(stack_pop_en),
-    .in_pc(PC_out),
-    .in_flags(CU_out_flags),
-    .out_pc(stack_out_pc),
-    .out_flags(stack_out_flags)
+    .out_reg_read_en(REG_read_en)
   );
 
 endmodule
