@@ -54,8 +54,8 @@ module control_unit(
   output [7:0] out_cu_out;
   output [3:0] out_flags;
 
-  reg [16:0] mem [0:35];
-  reg [23:0] micro_pc; // TODO: Arreglar luego. Son menos bits
+  reg [16:0] mem [0:35]; // TODO: read from a file as variables
+  reg [5:0] micro_pc;
   reg [3:0] flags;
   wire [4:0] op_code = in_ir[15:11];
 

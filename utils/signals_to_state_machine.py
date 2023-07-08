@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import math
 
 def flag_for_index(i):
     return 1 << i
@@ -114,5 +115,8 @@ def generate_state_machine(show_address):
         print(instruction)
 
 generate_state_machine(False)
-print(len(signals))
-print(len(state_machine))
+amount_of_signals = len(signals)
+amount_of_instr = len(state_machine)
+bits_of_micro_pc = math.ceil(math.log(len(state_machine), 2))
+print("reg [" + str(amount_of_signals-1) + ":0] mem [0:" + str(amount_of_instr-1) + "];")
+print("reg [" + str(bits_of_micro_pc-1) + ":0] micro_pc;")
