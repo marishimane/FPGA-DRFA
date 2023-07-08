@@ -9,7 +9,7 @@ signals = {
     "pc_load": flag_for_index(1),
     "pc_inc": flag_for_index(2),
     "pc_enable_out": flag_for_index(3),
-    "ir_enable_read": flag_for_index(4),
+    "ir_enable_write": flag_for_index(4),
     "mbs_wr_enable": flag_for_index(5),
     "data_memory_read_enable": flag_for_index(6),
     "data_memory_wr_enable": flag_for_index(7),
@@ -26,7 +26,7 @@ signals = {
 
 state_machine = [
     # Fetch
-    ["pc_enable_out", "ir_enable_read"],
+    ["pc_enable_out", "ir_enable_write"],
 
     # Decode
     ["decode"],

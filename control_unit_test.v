@@ -1,3 +1,11 @@
+`define assert(signal, value, testname) \
+  if (signal !== value) begin \
+    $display("!!!!! ASSERTION FAILED in %s !!!!!", testname); \
+    $finish; \
+  end else begin \
+    $display("# TEST PASSED: %s #", testname); \
+  end
+
 module control_unit_test;
   reg clk = 0;
   reg [8:0] in_addr;
@@ -21,13 +29,14 @@ module control_unit_test;
   assign data_mem_address = { MBS_output, BUS };
   reg data_memory_read_enable, data_memory_wr_enable, data_memory_addr_wr_enable;
   // Code Memory
-  reg [15:0] code_memory_out;
+  reg [15:0] in_ir;
+  reg [15:0] out_ir;
+
   // PC
   reg PC_load, PC_inc, PC_enOut;
   reg [8:0] PC_out, PC_in_value;
   // IR
   reg IR_load, IR_enOut;
-  reg [15:0] IR_out;
   // Stack
   reg stack_push_en, stack_pop_en;
   reg [3:0] stack_flags, out_flags;
@@ -35,23 +44,23 @@ module control_unit_test;
   control_unit CONTROL_UNIT(
     .clk(clk),
     .in_alu_flags(ALU_flags),
-    .in_ir(IR_out),
+    .in_ir(in_ir),
     .in_stack_flags(stack_flags),
+    .out_ir(out_ir),
+    .out_flags(out_flags),
+    .out_cu_out(BUS),
     .out_alu_enable_out(ALU_enable_out),
     .out_pc_load(PC_load),
     .out_pc_inc(PC_inc),
     .out_pc_enable_out(PC_enOut),
-    .out_ir_enable_read(IR_enOut),
     .out_mbs_wr_enable(MBS_wr_enable),
     .out_data_memory_read_enable(data_memory_read_enable),
     .out_data_memory_wr_enable(data_memory_wr_enable),
     .out_data_memory_addr_wr_enable(data_memory_addr_wr_enable),
     .out_reg_write_en(REG_write_en),
     .out_reg_read_en(REG_read_en),
-    .out_cu_out(BUS),
     .out_stack_push_en(stack_push_en),
-    .out_stack_pop_en(stack_pop_en),
-    .out_flags(out_flags)
+    .out_stack_pop_en(stack_pop_en)
   );
 
   initial begin
@@ -65,21 +74,21 @@ module control_unit_test;
 
     // Op ALU
     // add 000, 001
-    // IR_out = 16'b0;
-    // toggle_clk;
-    // toggle_clk;
-    // toggle_clk;
-    // toggle_clk;
+    /* in_ir = 16'b0; */
+    /* toggle_clk; */
+    /* toggle_clk; */
+    /* toggle_clk; */
+    /* toggle_clk; */
 
     // // Copy register
-    // IR_out = 16'b01000_010_001_00000;
+    // in_ir = 16'b01000_010_001_00000;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
 
     // // Set register
-    // IR_out = 16'b01001_011_11110000;
+    // in_ir = 16'b01001_011_11110000;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
@@ -87,7 +96,7 @@ module control_unit_test;
     // toggle_clk;
 
     // // Jump incondicional
-    // IR_out = 16'b10000_111110000_00;
+    // in_ir = 16'b10000_111110000_00;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
@@ -95,18 +104,18 @@ module control_unit_test;
 
     // // Jmpeq
     // ALU_flags = 4'b0001;
-    // IR_out = 16'b0;
+    // in_ir = 16'b0;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
-    // IR_out = 16'b10001_111110000_00;
+    // in_ir = 16'b10001_111110000_00;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
     // // Jmpneq
-    // IR_out = 16'b10010_111110000_00;
+    // in_ir = 16'b10010_111110000_00;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
@@ -114,12 +123,12 @@ module control_unit_test;
 
     // // getflags
     // ALU_flags = 4'b1001;
-    // IR_out = 16'b0;
+    // in_ir = 16'b0;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
-    // IR_out = 16'b11000_100_00000000;
+    // in_ir = 16'b11000_100_00000000;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
@@ -127,7 +136,7 @@ module control_unit_test;
     // toggle_clk;
 
     // // selectMemoryBank
-    // IR_out = 16'b11001_10_000000000;
+    // in_ir = 16'b11001_10_000000000;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
@@ -135,12 +144,12 @@ module control_unit_test;
 
     // // callSubrutine
     // ALU_flags = 4'b1001;
-    // IR_out = 16'b0;
+    // in_ir = 16'b0;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
-    // IR_out = 16'b10100_111100001_00;
+    // in_ir = 16'b10100_111100001_00;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
@@ -151,7 +160,7 @@ module control_unit_test;
 
     // // ReturnSubrutine
     // stack_flags = 4'b0101;
-    // IR_out = 16'b10101_00000100000;
+    // in_ir = 16'b10101_00000100000;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
@@ -159,7 +168,7 @@ module control_unit_test;
     // toggle_clk;
 
     // // readFromMemory
-    // IR_out = 16'b11101_101_11110000;
+    // in_ir = 16'b11101_101_11110000;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
@@ -170,7 +179,7 @@ module control_unit_test;
 
     // writeToMemory
     // // Directo a memoria
-    // IR_out = 16'b11100_000_11110000;
+    // in_ir = 16'b11100_000_11110000;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
@@ -179,7 +188,7 @@ module control_unit_test;
     // toggle_clk;
 
     // // Indirecto a memoria
-    // IR_out = 16'b11100_001_11110000;
+    // in_ir = 16'b11100_001_11110000;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
@@ -189,7 +198,7 @@ module control_unit_test;
     // toggle_clk;
 
     // // Directo a registro
-    // IR_out = 16'b11100_010_11110000;
+    // in_ir = 16'b11100_010_11110000;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
@@ -199,7 +208,13 @@ module control_unit_test;
     // toggle_clk;
 
     // Indirecto a registro
-    IR_out = 16'b11100_011_11110000;
+    in_ir = 16'b0;
+    toggle_clk;
+    toggle_clk;
+    toggle_clk;
+    toggle_clk;
+
+    in_ir = 16'b11100_011_11110000;
     toggle_clk;
     toggle_clk;
     toggle_clk;
