@@ -18,7 +18,6 @@ module drf_system(
   wire [7:0] BUS;
   // Registers
   wire [7:0] REG_rx, REG_ry;
-  wire [2:0] REG_rx_selector, REG_ry_selector;
   wire REG_write_en, REG_read_en;
   // ALU
   wire [7:0] ALU_out;
@@ -95,8 +94,8 @@ module drf_system(
     .clk(clk),
     .read_en(REG_read_en),
     .write_en(REG_write_en),
-    .in_rx_selector(IR_out[]), // TODO: CABLEAR DIRECTO AL IR
-    .in_ry_selector(REG_ry_selector), // TODO: CABLEAR DIRECTO AL IR
+    .in_rx_selector(IR_out[10:8]),
+    .in_ry_selector(IR_out[7:5]),
     .in_data(BUS),
     .out_bus_data(BUS),
     .out_rx_data(REG_rx),
