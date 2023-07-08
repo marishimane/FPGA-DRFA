@@ -5,13 +5,12 @@
     end
 
 module test;
-  reg clk = 0, ir_load = 0, ir_enOut = 0;
+  reg clk = 0, ir_load = 0;
   reg [15:0] in_value, out_value;
 
   instruction_register instruction_register(
     .clk(clk),
     .ir_load(ir_load),
-    .ir_enOut(ir_enOut),
     .in_value(in_value),
     .out_value(out_value)
   );
@@ -21,8 +20,6 @@ module test;
     $dumpfile("dump.vcd");
     $dumpvars(1);
 
-    ir_enOut = 1;
-
     // Load the IR
     in_value <= 16'hFDFD;
     ir_load = 1;
@@ -31,13 +28,7 @@ module test;
     toggle_clk;
     `assert( out_value, 16'hFDFD );
 
-    // Read the IR without enabling the output
-    ir_enOut = 0;
-    toggle_clk;
-    `assert( out_value, 16'bx );
-    
     // Load de IR without enabling the write
-    ir_enOut = 1;
     in_value <= 16'hFDFD;
     ir_load = 1;
     toggle_clk;

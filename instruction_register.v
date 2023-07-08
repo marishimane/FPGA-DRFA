@@ -1,9 +1,9 @@
 module instruction_register(
-  clk, ir_load, ir_enOut,
+  clk, ir_load,
   in_value, out_value,
 );
 
-  input clk, ir_load, ir_enOut;
+  input clk, ir_load;
   input [15:0] in_value;
   output [15:0] out_value;
 
@@ -17,5 +17,5 @@ module instruction_register(
     if ( ir_load ) ir <= in_value;
   end
 
-  assign out_value = ir_enOut? ir : 'bz;
+  assign out_value = ir;
 endmodule
