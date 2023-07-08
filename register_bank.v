@@ -3,6 +3,7 @@ module register_bank(
   in_data, out_bus_data, out_rx_data, out_ry_data
 );
 
+  // TODO: agregar flag de "indirecto" para el writeToMemory indirecto a registro
   input clk, read_en, write_en;
   input [2:0] in_rx_selector, in_ry_selector;
   input [7:0] in_data;

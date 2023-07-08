@@ -7,16 +7,15 @@ localparam ir_enable_read = 4;
 localparam mbs_wr_enable = 5;
 localparam data_memory_read_enable = 6;
 localparam data_memory_wr_enable = 7;
+localparam data_memory_addr_wr_enable = 12;
 localparam reg_write_en = 8;
 localparam reg_read_en = 9;
 localparam reset_micro_pc = 10;
-localparam cu_out = 11;
-localparam mem_addr_write_en = 12;
+localparam imm_en_out = 11;
 localparam decode = 13;
 localparam flags_en_out = 14;
-localparam imm_en_out = 15;
-localparam push_stack = 16;
-localparam pop_stack = 17;
+localparam push_stack = 15;
+localparam pop_stack = 16;
 
 // state machine addresses
 localparam ALU_EXECUTE = 2;
@@ -28,6 +27,11 @@ localparam GET_FLAGS_EXECUTE = 9;
 localparam SELECT_MEM_BANK_EXECUTE = 11;
 localparam CALL_SUBRUTINE_EXECUTE = 15;
 localparam RETURN_SUBRUTINE_EXECUTE = 18;
+localparam READ_FROM_MEMORY_EXECUTE = 20;
+localparam WRITE_MEMORY_DIRECT_EXECUTE = 23;
+localparam WRITE_MEMORY_INDIRECT_EXECUTE = 26;
+localparam WRITE_MEMORY_DIRECT_REGISTER_EXECUTE = 30;
+localparam WRITE_MEMORY_INDIRECT_REGISTER_EXECUTE = 33;
 
 module control_unit(
   clk,
@@ -35,7 +39,7 @@ module control_unit(
   out_pc_inc, out_pc_enable_out, out_ir_enable_read,
   out_mbs_wr_enable, out_data_memory_read_enable, out_data_memory_wr_enable,
   out_data_memory_addr_wr_enable, out_reg_write_en, out_reg_read_en,
-  out_reset_micro_pc, out_mem_addr_write_en, out_cu_out,
+  out_reset_micro_pc, out_cu_out,
   out_stack_push_en, out_stack_pop_en, out_flags,
 );
 
@@ -46,11 +50,11 @@ module control_unit(
   output out_alu_enable_out, out_pc_load, out_pc_inc, out_pc_enable_out,
     out_ir_enable_read, out_mbs_wr_enable, out_data_memory_read_enable,
     out_data_memory_wr_enable, out_data_memory_addr_wr_enable, out_reg_write_en, out_reg_read_en,
-    out_reset_micro_pc, out_mem_addr_write_en, out_stack_push_en, out_stack_pop_en;
+    out_reset_micro_pc, out_stack_push_en, out_stack_pop_en;
   output [7:0] out_cu_out;
   output [3:0] out_flags;
 
-  reg [17:0] mem [0:34];
+  reg [16:0] mem [0:35];
   reg [23:0] micro_pc; // TODO: Arreglar luego. Son menos bits
   reg [3:0] flags;
   wire [4:0] op_code = in_ir[15:11];
@@ -83,12 +87,12 @@ module control_unit(
         micro_pc <= ALU_EXECUTE;
       end
       // CopyRegister
-      if(op_code[4:0] == 5'b01000) begin
+      if(op_code == 5'b01000) begin
         micro_pc <= COPY_REG_EXECUTE;
       end
 
       // SetRegister
-      if(op_code[4:0] == 5'b01001) begin
+      if(op_code == 5'b01001) begin
         micro_pc <= SET_REG_EXECUTE;
       end
       // Saltos
@@ -106,22 +110,72 @@ module control_unit(
       end
 
       // callSubrutine
-      if(op_code[4:0] == 5'b10100) begin
+      if(op_code == 5'b10100) begin
         micro_pc <= CALL_SUBRUTINE_EXECUTE;
       end
 
       // returnSubrutine
-      if(op_code[4:0] == 5'b10101) begin
+      if(op_code == 5'b10101) begin
         micro_pc <= RETURN_SUBRUTINE_EXECUTE;
       end
 
+      // readFromMemory
+      if(op_code == 5'b11101) begin
+        micro_pc <= READ_FROM_MEMORY_EXECUTE;
+      end
+
+      // writeToMemory
+      // Inmediato
+      if(in_ir[15:8] == 8'b11100_000 ) begin
+        micro_pc <= WRITE_MEMORY_DIRECT_EXECUTE;
+      end
+
+      // Inmediato
+      if(in_ir[15:8] == 8'b11100_001 ) begin
+        micro_pc <= WRITE_MEMORY_INDIRECT_EXECUTE;
+      end
+
+      // Registro
+      if(in_ir[15:8] == 8'b11100_010 ) begin
+        micro_pc <= WRITE_MEMORY_DIRECT_REGISTER_EXECUTE;
+      end
+
+      // Indirecto a registro
+      if(in_ir[15:8] == 8'b11100_011 ) begin
+        micro_pc <= WRITE_MEMORY_INDIRECT_REGISTER_EXECUTE;
+      end
+
+  //     // Write to memory
+  // // Directo a registro - write Ry => [Ry] <= R0
+  // - En un ciclo
+  //   - Ry selector ponemos el registro fuente dado por el IR
+  //   - Read enable de los registros
+  //   - Memory address write enable
+  // - En otro ciclo
+  //   - Ry selector ponemos R0
+  //   - Read enable de los registros
+  //   - Mem in enable del data memory
+  // // Indirecto a registro - write [Ry] => [registros[Ry]] <= R0
+  // - En un ciclo
+  //   - Ry selector ponemos el registro fuente dado por el IR
+  //   - Read enable de los registros
+  //   - Escribimos en el registro de la UC lo que salga de Rout
+  // - En otro ciclo
+  //   - Ry selector ponemos el registro de la UC
+  //   - Read enable de los registros
+  //   - Mem in enable del data memory
+  // - En otro ciclo
+  //   - Ry selector ponemos R0
+  //   - Read enable de los registros
+  //   - Mem in enable del data memory
+
       // getflags
-      if(op_code[4:0] == 5'b11000) begin
+      if(op_code == 5'b11000) begin
         micro_pc <= GET_FLAGS_EXECUTE;
       end
 
       // selectMemoryBank
-      if(op_code[4:0] == 5'b11001) begin
+      if(op_code == 5'b11001) begin
         micro_pc <= SELECT_MEM_BANK_EXECUTE;
       end
     end
@@ -143,12 +197,12 @@ module control_unit(
   assign out_pc_enable_out = mem[micro_pc][pc_enable_out];
   assign out_ir_enable_read = mem[micro_pc][ir_enable_read];
   assign out_mbs_wr_enable = mem[micro_pc][mbs_wr_enable];
+  assign out_data_memory_addr_wr_enable = mem[micro_pc][data_memory_addr_wr_enable];
   assign out_data_memory_read_enable = mem[micro_pc][data_memory_read_enable];
   assign out_data_memory_wr_enable = mem[micro_pc][data_memory_wr_enable];
   assign out_reg_write_en = mem[micro_pc][reg_write_en];
   assign out_reg_read_en = mem[micro_pc][reg_read_en];
   assign out_reset_micro_pc = mem[micro_pc][reset_micro_pc];
-  assign out_mem_addr_write_en = mem[micro_pc][mem_addr_write_en];
 
   assign out_cu_out = (mem[micro_pc][flags_en_out]) ? {4'b0000, flags} :
                       mem[micro_pc][imm_en_out]     ? in_ir[7:0] :

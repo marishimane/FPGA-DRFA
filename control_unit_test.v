@@ -149,17 +149,64 @@ module control_unit_test;
     // toggle_clk;
     // toggle_clk;
 
-    // ReturnSubrutine
-    stack_flags = 4'b0101;
-    IR_out = 16'b10101_00000100000;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
+    // // ReturnSubrutine
+    // stack_flags = 4'b0101;
+    // IR_out = 16'b10101_00000100000;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
 
+    // // readFromMemory
+    // IR_out = 16'b11101_101_11110000;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
 
+    // writeToMemory
+    // // Directo a memoria
+    // IR_out = 16'b11100_000_11110000;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
 
+    // // Indirecto a memoria
+    // IR_out = 16'b11100_001_11110000;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+
+    // // Directo a registro
+    // IR_out = 16'b11100_010_11110000;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+
+    // Indirecto a registro
+    IR_out = 16'b11100_011_11110000;
+    toggle_clk;
+    toggle_clk;
+    toggle_clk;
+    toggle_clk;
+    toggle_clk;
+    toggle_clk;
+    toggle_clk;
   end
 
 
