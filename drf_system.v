@@ -37,7 +37,7 @@ module drf_system(
   wire REG_write_en, REG_read_en;
   // ALU
   wire [7:0] ALU_out;
-  wire [2:0] ALU_op;
+  wire [2:0] ALU_op = IR_out[2:0];
   wire ALU_enable_out;
   wire [3:0] ALU_flags;
   // Memory Bank Selector (MBS)
@@ -56,6 +56,7 @@ module drf_system(
   wire [15:0] IR_out;
   // Stack
   wire [3:0] CU_out_flags;
+  wire [2:0] zero_reg = 3'b000;
 
   code_memory code_memory(
     .clk(clk),
@@ -96,7 +97,8 @@ module drf_system(
     .read_en(REG_read_en),
     .write_en(REG_write_en),
     .in_rx_selector(IR_out[10:8]),
-    .in_ry_selector(IR_out[7:5]),
+    .in_ry_selector((IR_out[15:11] == 5'b11100)? zero_reg : IR_out[7:5]),
+    .in_indirect_mode_en(0), // TODO: sacar del IR
     .in_data(BUS),
     .out_bus_data(BUS),
     .out_rx_data(REG_rx),

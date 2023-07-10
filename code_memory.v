@@ -21,5 +21,6 @@ module code_memory(
       read_data <= mem[in_addr];
   end
 
-  assign out_data = read_data;
+  assign out_data = mem[in_addr];
 endmodule
+
