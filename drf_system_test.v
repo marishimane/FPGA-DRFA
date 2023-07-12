@@ -9,6 +9,7 @@
 module test;
   reg clk = 0;
   reg [3:0] port_input, port_output;
+  integer test = 100;
 
   wire [2:0] in_rx_selector;
   wire [2:0] in_ry_selector;
@@ -26,46 +27,10 @@ module test;
     $dumpfile("dump.vcd");
     $dumpvars(1);
 
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
+    while ( test > 0 ) begin
+      toggle_clk;
+      test = test - 1;
+    end
   end
 
   task toggle_clk;
