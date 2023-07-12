@@ -122,7 +122,7 @@ module control_unit(
 
   always @(posedge clk) begin
     $display(micro_pc);
-    $display(mem[micro_pc]);
+    // $display(mem[micro_pc]);
 
     // Pisar flags cuando se ejecuta una operacion de ALU
     if(mem[micro_pc][alu_enable_out] == 1'b1) begin

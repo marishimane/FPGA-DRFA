@@ -9,11 +9,12 @@ module alu (
   output [3:0] flags;
 
   wire [8:0] r_a, r_b;
-  wire [8:0] r_out;
+  reg [8:0] r_out;
   wire [2:0] op_w;
   wire fO , fN , fZ , fC;
 
   initial begin
+    r_out <= 0 ;
   end
 
   assign r_a = { 1'b0, in_A };
@@ -30,21 +31,25 @@ module alu (
   localparam shl = 3'b111;
 
   always @(posedge clk) begin
-    $display("alu_out: ", out);
-    $display("alu r_a: ", r_a);
-    $display("alu_r_b: ", r_b);
-    $display("op: ", op);
-  end
+    // $display("alu_out: ", out);
+    // $display("alu r_a: ", r_a);
+    // $display("alu_r_b: ", r_b);
+    // $display("op: ", op);
+    // $display("alu_en_out: ", in_enable_out);
 
-  assign r_out =
-    (op == add) ? r_a + r_b : (
-    (op == sub) ? r_a - r_b : (
-    (op == or_) ? r_a | r_b : (
-    (op == and_) ? r_a & r_b : (
-    (op == not_) ? ~r_a : (
-    (op == comp) ? r_a == r_b : (
-    (op == shr) ? r_a >> 1 : (
-    (op == shl) ? r_a << 1 : 'bz )))))));
+    if ( in_enable_out == 0 ) begin
+      case ( op )
+        add : begin r_out <= r_a + r_b; end
+        sub : begin r_out <= r_a - r_b; end
+        or_ : begin r_out <= r_a | r_b; end
+        and_ : begin r_out <= r_a & r_b; end
+        not_ : begin r_out <= ~r_a; end
+        comp : begin r_out <= r_a == r_b; end
+        shr : begin r_out <= r_a >> 1; end
+        shl : begin r_out <= r_a << 1; end
+      endcase
+    end
+  end
 
   assign fN = r_out[7];
   assign fZ = (r_out[7:0] == 8'h0)? 1 : 0;

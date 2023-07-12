@@ -20,26 +20,20 @@ module register_bank(
   end
 
   always @(posedge clk) begin
-    $display("register_read_en: ", read_en);
-    $display("register_out_bus_data: ", out_bus_data);
-    $display("register_in_ry_selector: ", in_ry_selector);
+    // $display("register_in_data: ", in_data);
+    // $display("register_read_en: ", read_en);
+    // $display("register_write_en: ", write_en);
+    // $display("register_out_bus_data: ", out_bus_data);
+    // $display("register_in_ry_selector: ", in_ry_selector);
 
-    $display("register_in_rx_selector: ", in_rx_selector);
+    // $display("register_in_rx_selector: ", in_rx_selector);
 
-    $display("registers[ry_sel]: ", registers[in_ry_selector]);
-    $display("registers[rx_sel]: ", registers[in_rx_selector]);
-    $display("registers_indirect_mode: ", in_indirect_mode_en);
-    $display("out_rx_data", out_rx_data);
-    $display("out_ry_data", out_ry_data);
-  end
+    // $display("registers[ry_sel]: ", registers[in_ry_selector]);
+    // $display("registers[rx_sel]: ", registers[in_rx_selector]);
+    // $display("registers_indirect_mode: ", in_indirect_mode_en);
+    // $display("out_rx_data", out_rx_data);
+    // $display("out_ry_data", out_ry_data);
 
-  always @(negedge clk) begin
-    $display("negedge");
-    $display("registers[ry_sel]: ", registers[in_ry_selector]);
-    $display("registers[rx_sel]: ", registers[in_rx_selector]);
-    $display("registers_indirect_mode: ", in_indirect_mode_en);
-    $display("out_rx_data", out_rx_data);
-    $display("out_ry_data", out_ry_data);
     if ( write_en ) begin
       // Only one register can be written at a time
       registers[in_rx_selector] <= in_data;
