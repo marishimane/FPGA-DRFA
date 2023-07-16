@@ -10,10 +10,10 @@ module test;
   reg [8:0] in_pc;
   reg [3:0] in_flags;
 
-  reg [8:0] out_pc;
-  reg [3:0] out_flags;
+  wire [8:0] out_pc;
+  wire [3:0] out_flags;
 
-  io_ports ports(
+  stack stack(
     .clk(clk),
     .push_en(push_en),
     .pop_en(pop_en),

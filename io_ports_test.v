@@ -4,14 +4,18 @@
         $finish; \
     end
 
-localparam INPUT_PORT = 10'b1111111110;
-localparam OUTPUT_PORT = 10'b1111111111;
-
 module test;
+  localparam INPUT_PORT = 10'b1111111110;
+  localparam OUTPUT_PORT = 10'b1111111111;
+
+
   reg clk = 0, in_write_en = 0, in_read_en = 0;
-  reg [3:0] in_port, out_port;
-  reg [7:0] in_data, out_data;
+  reg [3:0] in_port;
+  reg [7:0] in_data;
   reg [9:0] in_addr;
+  
+  wire [3:0] out_port;
+  wire [7:0] out_data;
 
   io_ports ports(
     .clk(clk),

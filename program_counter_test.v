@@ -6,7 +6,9 @@
 
 module test;
   reg clk = 0, pc_load = 0, pc_inc = 0, pc_enOut = 0;
-  reg [8:0] in_value, out_value;
+  reg [8:0] in_value;
+  
+  wire [8:0] out_value;
 
   program_counter program_counter(
     .clk(clk),

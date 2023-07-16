@@ -6,7 +6,8 @@
 
 module test;
   reg clk = 0, ir_load = 0;
-  reg [15:0] in_value, out_value;
+  reg [15:0] in_value;
+  wire [15:0] out_value;
 
   instruction_register instruction_register(
     .clk(clk),

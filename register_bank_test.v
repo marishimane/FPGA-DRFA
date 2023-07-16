@@ -6,9 +6,11 @@
 
 module test;
   reg clk = 0, read_en = 0, write_en = 0;
-  reg [7:0] in_data, out_bus_data, out_rx_data, out_ry_data;
+  reg [7:0] in_data;
   reg [2:0] in_rx_selector, in_ry_selector;
   reg in_indirect_mode_en = 0;
+  
+  wire [7:0] out_bus_data, out_rx_data, out_ry_data;
 
   register_bank registers(
     .clk(clk),
@@ -18,7 +20,7 @@ module test;
     .in_ry_selector(in_ry_selector),
     .in_indirect_mode_en(in_indirect_mode_en),
     .in_data(in_data),
-    .out_bus_data(out_bus_data),
+    .out_bus_data(bus_o),
     .out_rx_data(out_rx_data),
     .out_ry_data(out_ry_data)
   );

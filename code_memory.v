@@ -1,7 +1,6 @@
 // Code gets loaded at synth time
 module code_memory(
-    clk,
-    in_addr, out_data, 
+    clk, in_addr, out_data,
 );
   input clk;
 
