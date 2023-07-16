@@ -36,7 +36,7 @@ module drf_system(
   wire [7:0] REG_rx, REG_ry;
   wire REG_write_en, REG_read_en;
   // ALU
-  wire [2:0] ALU_op = IR_out[2:0];
+  wire [2:0] ALU_op = IR_out[13:11];
   wire ALU_enable_out;
   wire [3:0] ALU_flags;
   // Memory Bank Selector (MBS)

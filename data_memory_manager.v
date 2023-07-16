@@ -18,6 +18,15 @@ module data_memory_manager(
     if ( in_addr_write_en ) address_register <= in_addr;
   end
 
+  // always @(posedge clk) begin
+  //   $display("address_register: %b", address_register);
+  //   $display("in_data: %b", in_data);
+  //   $display("out_data: %b", out_data);
+  //   $display("in_read_en: %b", in_read_en);
+  //   $display("in_write_en: %b", in_write_en);
+  //   $display("in_addr_write_en: %b", in_addr_write_en);
+  // end
+
   data_memory data_memory(
     .clk(clk),
     .in_addr(address_register),

@@ -4,7 +4,7 @@ module test;
   localparam or_ = 3'b010;
   localparam and_ = 3'b011;
   localparam not_ = 3'b100;
-  localparam comp = 3'b101;
+  localparam cmp = 3'b101;
   localparam shr = 3'b110;
   localparam shl = 3'b111;
 
@@ -241,8 +241,8 @@ module test;
 
     `assert(out, 8'b10101100, "not a")
     
-    $display("########## TESTING COMP OP ##########");
-    op <= comp;
+    $display("########## TESTING CMP OP ##########");
+    op <= cmp;
     
     $display("----- a != b -----");
     r_a <= 8'b01010011;
@@ -250,7 +250,8 @@ module test;
 
     toggle_clk;
 
-    `assert(out, 8'b00000000, "comp a b")
+    `assert(out, r_a, "cmp a b")
+    `assert(fZ, 0, "fZ is 0")
     
     $display("----- a == b -----");
     r_a <= 8'b01010011;
@@ -258,7 +259,8 @@ module test;
 
     toggle_clk;
 
-    `assert(out, 8'b00000001, "comp a b")
+    `assert(out, r_a, "cmp a b")
+    `assert(fZ, 1, "fZ is 1")
     
     $display("########## TESTING SHIFT RIGHT OP ##########");
     op <= shr;

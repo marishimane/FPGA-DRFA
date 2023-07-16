@@ -162,8 +162,8 @@ module control_unit(
             micro_pc <= (flags[0] == 1'b1) ? JUMP_EXECUTE : NOT_JUMP;
           end
           if(op_code[1:0] == 2'b10) begin // Jmpneq
-            $display("FLAGS: ", flags);
-            $display("FLAG Z: ", flags[0]);
+            // $display("FLAGS: ", flags);
+            // $display("FLAG Z: ", flags[0]);
             micro_pc <= (flags[0] == 1'b0) ? JUMP_EXECUTE : NOT_JUMP;
           end
         end
