@@ -30,7 +30,7 @@ module stack(
         end
 
         empty = 1'b0;
-        pc_stack[index]    = in_pc;
+        pc_stack[index]    = in_pc + 1;
         flags_stack[index] = in_flags;
     end
 

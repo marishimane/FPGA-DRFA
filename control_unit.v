@@ -24,19 +24,19 @@ localparam pop_stack = 16;
 // state machine addresses
 localparam ALU_EXECUTE = 2;
 localparam COPY_REG_EXECUTE = 4;
-localparam SET_REG_EXECUTE = 13;
 localparam JUMP_EXECUTE = 6;
 localparam NOT_JUMP = 8;
 localparam GET_FLAGS_EXECUTE = 9;
 localparam SELECT_MEM_BANK_EXECUTE = 11;
+localparam SET_REG_EXECUTE = 13;
 localparam CALL_SUBRUTINE_EXECUTE = 15;
 localparam RETURN_SUBRUTINE_EXECUTE = 18;
 localparam READ_MEMORY_IMM_EXECUTE = 20;
-localparam READ_MEMORY_REGISTER_EXECUTE = 36;
 localparam WRITE_MEMORY_DIRECT_EXECUTE = 23;
 localparam WRITE_MEMORY_INDIRECT_EXECUTE = 26;
 localparam WRITE_MEMORY_DIRECT_REGISTER_EXECUTE = 30;
 localparam WRITE_MEMORY_INDIRECT_REGISTER_EXECUTE = 33;
+localparam READ_MEMORY_REGISTER_EXECUTE = 36;
 
 module control_unit(
   clk,
@@ -98,8 +98,9 @@ module control_unit(
     .pc_inc(cs_pc_inc),
     .pc_enOut(cs_pc_en_out),
     .in_value(
-      (internal_out_ir[15:11] == 5'b10101) ? stack_out_pc : // Es un retSubrutine
-      internal_out_ir[10:2] // Sale del inmediato del IR
+      (internal_out_ir[15:11] == 5'b10101) ? // Es un retSubrutine
+        stack_out_pc :        // Sale del stack
+        internal_out_ir[10:2] // Sale del inmediato del IR
     ),
     .out_value(PC_out)
   );
