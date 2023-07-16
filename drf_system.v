@@ -94,9 +94,18 @@ module drf_system(
     .clk(clk),
     .read_en(REG_read_en),
     .write_en(REG_write_en),
-    .in_rx_selector(IR_out[10:8]),
-    .in_ry_selector((IR_out[15:11] == 5'b11100)? 3'b000 : IR_out[7:5]),
-    .in_indirect_mode_en((IR_out[15:8] == 8'b11100_011)? 1'b1 : 1'b0),
+    .in_rx_selector(
+      // IR_out[10:8]
+      (IR_out[15:11] == 5'b11101)?  // readm?
+        3'b000 :                    // escribo en el registro 0
+        IR_out[10:8]                // escribo en el registro indicado
+    ),
+    .in_ry_selector( // TODO: Revisar si esto anda para el writem
+      (IR_out[15:11] == 5'b11100)?  // writem?
+        3'b000 :                    // escribo en memoria el registro 0
+        IR_out[7:5]                 // escribo en memoria el registro indicado
+    ),
+    .in_indirect_mode_en((IR_out[15:8] == 8'b11100_011)? 1 : 0),
     .in_data(BUS),
     .out_bus_data(BUS),
     .out_rx_data(REG_rx),
