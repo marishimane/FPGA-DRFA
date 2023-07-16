@@ -102,8 +102,8 @@ module drf_system(
     ),
     .in_ry_selector( // TODO: Revisar si esto anda para el writem
       (IR_out[15:11] == 5'b11100)?  // writem?
-        3'b000 :                    // escribo en memoria el registro 0
-        IR_out[7:5]                 // escribo en memoria el registro indicado
+        3'b000 :                    // leo el registro 0
+        IR_out[7:5]                 // leo el registro indicado
     ),
     .in_indirect_mode_en((IR_out[15:8] == 8'b11100_011)? 1 : 0),
     .in_data(BUS),
