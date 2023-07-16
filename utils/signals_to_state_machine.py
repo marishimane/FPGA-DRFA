@@ -73,7 +73,7 @@ state_machine = [
     # readm 0xAA
     # 11101 000(Rx) MMMMMMMM
     ["imm_en_out", "data_memory_addr_wr_enable"],
-    ["data_memory_read_enable", "reg_write_en"], #Usar R0
+    ["data_memory_read_enable", "reg_write_en"],
     ["reset_micro_pc", "pc_inc"],
 
     # Write to memory
@@ -82,7 +82,7 @@ state_machine = [
     ["reg_read_en", "data_memory_wr_enable"],
     ["reset_micro_pc", "pc_inc"],
 
-    #26 Indirecto a memoria - write [M] => [M] <= R0 // TODO: Fix, No está funcionando
+    #26 Indirecto a memoria - write [M] => [M] <= R0
     ["imm_en_out", "data_memory_addr_wr_enable"],
     ["data_memory_read_enable", "data_memory_addr_wr_enable"],
     ["reg_read_en", "data_memory_wr_enable"],
@@ -104,7 +104,7 @@ state_machine = [
     # readm r2
     # 11101 010(Rx) 010(Ry) XXXXX
     ["reg_read_en", "data_memory_addr_wr_enable"],
-    ["data_memory_read_enable", "reg_write_en"], #Usar R0
+    ["data_memory_read_enable", "reg_write_en"],
     ["reset_micro_pc", "pc_inc"],
 ]
 
