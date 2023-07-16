@@ -28,9 +28,9 @@ module data_memory(
     if (in_addr != in_port_addr && in_addr != out_port_addr) begin
       if ( in_write_en == 1 ) mem[in_addr] = in_data;
 
-      if ( in_read_en == 1 ) read_data = mem[in_addr];
+      // if ( in_read_en == 1 ) read_data = mem[in_addr];
     end
   end
 
-  assign out_data = (in_addr != in_port_addr && in_addr != out_port_addr && in_read_en)? read_data : 'bz;
+  assign out_data = (in_addr != in_port_addr && in_addr != out_port_addr && in_read_en)? mem[in_addr] : 'bz;
 endmodule

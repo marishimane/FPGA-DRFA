@@ -31,7 +31,8 @@ localparam GET_FLAGS_EXECUTE = 9;
 localparam SELECT_MEM_BANK_EXECUTE = 11;
 localparam CALL_SUBRUTINE_EXECUTE = 15;
 localparam RETURN_SUBRUTINE_EXECUTE = 18;
-localparam READ_FROM_MEMORY_EXECUTE = 20;
+localparam READ_MEMORY_IMM_EXECUTE = 20;
+localparam READ_MEMORY_REGISTER_EXECUTE = 36;
 localparam WRITE_MEMORY_DIRECT_EXECUTE = 23;
 localparam WRITE_MEMORY_INDIRECT_EXECUTE = 26;
 localparam WRITE_MEMORY_DIRECT_REGISTER_EXECUTE = 30;
@@ -64,7 +65,7 @@ module control_unit(
     out_reset_micro_pc;
 
   // State machine
-  reg [16:0] mem [0:35]; // TODO: read from a file as variables
+  reg [16:0] mem [0:38];  // TODO: read from a file as variables
   reg [5:0] micro_pc;
   reg [3:0] flags;
   wire [15:0] internal_out_ir;
@@ -126,11 +127,13 @@ module control_unit(
 
     // Pisar flags cuando se ejecuta una operacion de ALU
     if(mem[micro_pc][alu_enable_out] == 1'b1) begin
+      // $display("in_alu_flags: ", flags);
       flags <= in_alu_flags;
     end
 
     // Pisar flags si el stack hace pop
     if(mem[micro_pc][pop_stack] == 1'b1) begin
+      // $display("stack_out_flags: ", flags);
       flags <= stack_out_flags;
     end
 
@@ -155,10 +158,12 @@ module control_unit(
           micro_pc <= JUMP_EXECUTE;
         end else begin
           if(op_code[1:0] == 2'b01) begin // Jmpeq
-            micro_pc <= flags[0] == 1'b1 ? JUMP_EXECUTE : NOT_JUMP;
+            micro_pc <= (flags[0] == 1'b1) ? JUMP_EXECUTE : NOT_JUMP;
           end
-          if(op_code[1:0] == 2'b10) begin // Jmpeq
-            micro_pc <= flags[0] == 1'b0 ? JUMP_EXECUTE : NOT_JUMP;
+          if(op_code[1:0] == 2'b10) begin // Jmpneq
+            $display("FLAGS: ", flags);
+            $display("FLAG Z: ", flags[0]);
+            micro_pc <= (flags[0] == 1'b0) ? JUMP_EXECUTE : NOT_JUMP;
           end
         end
       end
@@ -173,18 +178,13 @@ module control_unit(
         micro_pc <= RETURN_SUBRUTINE_EXECUTE;
       end
 
-      // readFromMemory
-      if(op_code == 5'b11101) begin
-        micro_pc <= READ_FROM_MEMORY_EXECUTE;
-      end
-
       // writeToMemory
       // Inmediato
       if(internal_out_ir[15:8] == 8'b11100_000 ) begin
         micro_pc <= WRITE_MEMORY_DIRECT_EXECUTE;
       end
 
-      // Inmediato
+      // Indirecto
       if(internal_out_ir[15:8] == 8'b11100_001 ) begin
         micro_pc <= WRITE_MEMORY_INDIRECT_EXECUTE;
       end
@@ -197,6 +197,17 @@ module control_unit(
       // Indirecto a registro
       if(internal_out_ir[15:8] == 8'b11100_011 ) begin
         micro_pc <= WRITE_MEMORY_INDIRECT_REGISTER_EXECUTE;
+      end
+
+      // readFromMemory
+      // Inmediato
+      if(internal_out_ir[15:8] == 8'b11101_000 ) begin
+        micro_pc <= READ_MEMORY_IMM_EXECUTE;
+      end
+
+      // Registro
+      if(internal_out_ir[15:8] == 8'b11101_010 ) begin
+        micro_pc <= READ_MEMORY_REGISTER_EXECUTE;
       end
 
       // getflags

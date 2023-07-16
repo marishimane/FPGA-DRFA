@@ -162,8 +162,9 @@ module control_unit_test;
     // toggle_clk;
     // toggle_clk;
 
-    // // readFromMemory
-    // in_ir = 16'b11101_101_11110000;
+    // readFromMemory
+    // Inmediato
+    // in_ir = 16'b11101_000_11110000;
     // toggle_clk;
     // toggle_clk;
     // toggle_clk;
@@ -172,7 +173,17 @@ module control_unit_test;
     // toggle_clk;
     // toggle_clk;
 
-    // writeToMemory
+    // // Registro
+    // in_ir = 16'b11101_010_11110000;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+
+    // // writeToMemory
     // // Directo a memoria
     // in_ir = 16'b11100_000_11110000;
     // toggle_clk;
@@ -202,21 +213,21 @@ module control_unit_test;
     // toggle_clk;
     // toggle_clk;
 
-    // Indirecto a registro
-    in_ir = 16'b0;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
+    // // Indirecto a registro
+    // in_ir = 16'b0;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
 
-    in_ir = 16'b11100_011_11110000;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
-    toggle_clk;
+    // in_ir = 16'b11100_011_11110000;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
+    // toggle_clk;
   end
 
 

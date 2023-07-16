@@ -49,7 +49,7 @@ module drf_system(
   wire data_memory_read_enable, data_memory_wr_enable, data_memory_addr_wr_enable;
   // Code Memory
   wire [15:0] code_memory_out;
-  wire [15:0] code_memory_addr_in;
+  wire [8:0] code_memory_addr_in;
   // PC
   wire [8:0] PC_out;
   wire [15:0] IR_out;
@@ -96,7 +96,7 @@ module drf_system(
     .write_en(REG_write_en),
     .in_rx_selector(IR_out[10:8]),
     .in_ry_selector((IR_out[15:11] == 5'b11100)? 3'b000 : IR_out[7:5]),
-    .in_indirect_mode_en((IR_out[15:8] == 8'b11100_011)? 1 : 0),
+    .in_indirect_mode_en((IR_out[15:8] == 8'b11100_011)? 1'b1 : 1'b0),
     .in_data(BUS),
     .out_bus_data(BUS),
     .out_rx_data(REG_rx),

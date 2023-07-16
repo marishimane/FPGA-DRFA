@@ -40,7 +40,7 @@ state_machine = [
     ["reg_write_en", "reg_read_en"],
     ["reset_micro_pc", "pc_inc"],
 
-    # Jumps
+    #6 Jumps
     ["pc_load"],
     ["reset_micro_pc"],
 
@@ -69,6 +69,9 @@ state_machine = [
     ["reset_micro_pc"],
 
     #20 readFromMemory
+    # Inmediato - read M => R0 <= M
+    # readm 0xAA
+    # 11101 000(Rx) MMMMMMMM
     ["imm_en_out", "data_memory_addr_wr_enable"],
     ["data_memory_read_enable", "reg_write_en"], #Usar R0
     ["reset_micro_pc", "pc_inc"],
@@ -76,24 +79,32 @@ state_machine = [
     # Write to memory
     #23 Inmediato - write M => M <= R0
     ["imm_en_out", "data_memory_addr_wr_enable"],
-    ["reg_read_en", "data_memory_wr_enable"], #Usar R0
+    ["reg_read_en", "data_memory_wr_enable"],
     ["reset_micro_pc", "pc_inc"],
 
-    #26 Indirecto a memoria - write [M] => [M] <= R0
+    #26 Indirecto a memoria - write [M] => [M] <= R0 // TODO: Fix, No está funcionando
     ["imm_en_out", "data_memory_addr_wr_enable"],
     ["data_memory_read_enable", "data_memory_addr_wr_enable"],
-    ["reg_read_en", "data_memory_wr_enable"], #Usar R0
+    ["reg_read_en", "data_memory_wr_enable"],
     ["reset_micro_pc", "pc_inc"],
 
-    #30 Directo a registro - write Ry => [Ry] <= R0
+    #30 Directo a registro - write Ry => [Ry] <= R0 // TODO: REVISAR si el Ry es correcto (parece estar harcodeado a 0)
     ["reg_read_en", "data_memory_addr_wr_enable"],
-    ["reg_read_en", "data_memory_wr_enable"], #Usar R0
+    ["reg_read_en", "data_memory_wr_enable"],
     ["reset_micro_pc", "pc_inc"],
 
-    #33 Indirecto a registro - write [Ry] => [registros[Ry]] <= R0
+    #33 Indirecto a registro - write [Ry] => [registros[Ry]] <= R0 // TODO: REVISAR si el Ry es correcto (parece estar harcodeado a 0)
     # Se resuelve con el bankRegister. Toma del IR que el direccionamiento es indirecto
     ["reg_read_en", "data_memory_addr_wr_enable"],
-    ["reg_read_en", "data_memory_wr_enable"], #Usar R0
+    ["reg_read_en", "data_memory_wr_enable"],
+    ["reset_micro_pc", "pc_inc"],
+
+    #36 readFromMemory
+    # Registro - read Ry => R0 <= [Ry]
+    # readm r2
+    # 11101 010(Rx) 010(Ry) XXXXX
+    ["reg_read_en", "data_memory_addr_wr_enable"],
+    ["data_memory_read_enable", "reg_write_en"], #Usar R0
     ["reset_micro_pc", "pc_inc"],
 ]
 
