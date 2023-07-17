@@ -11,35 +11,39 @@ module control_unit_test;
   reg [8:0] in_addr;
   reg [15:0] out_data;
 
-  reg [7:0] BUS;
+  wire [7:0] BUS;
   // Registers
   reg [7:0] REG_rx, REG_ry;
   reg [2:0] REG_rx_selector, REG_ry_selector;
-  reg REG_write_en, REG_read_en;
+  wire REG_write_en, REG_read_en;
   // ALU
   reg [7:0] ALU_out;
   reg [2:0] ALU_op;
-  reg ALU_enable_out;
+  wire ALU_enable_out;
   reg [3:0] ALU_flags;
   // Memory Bank Selector (MBS)
   reg [1:0] MBS_input, MBS_output;
-  reg MBS_wr_enable;
+  wire MBS_wr_enable;
+  
   // Data Memory
-  reg [9:0] data_mem_address;
+  wire [9:0] data_mem_address;
   assign data_mem_address = { MBS_output, BUS };
-  reg data_memory_read_enable, data_memory_wr_enable, data_memory_addr_wr_enable;
+  wire data_memory_read_enable, data_memory_wr_enable, data_memory_addr_wr_enable;
+
   // Code Memory
   reg [15:0] in_ir;
-  reg [15:0] out_ir;
+  wire [15:0] out_ir;
 
   // PC
   reg PC_load, PC_inc, PC_enOut;
-  reg [8:0] PC_out, PC_in_value;
+  reg [8:0] PC_in_value;
+  wire [8:0] PC_out;
   // IR
   reg IR_load, IR_enOut;
   // Stack
   reg stack_push_en, stack_pop_en;
-  reg [3:0] stack_flags, out_flags;
+  reg [3:0] stack_flags;
+  wire [3:0] out_flags;
 
   control_unit CONTROL_UNIT(
     .clk(clk),

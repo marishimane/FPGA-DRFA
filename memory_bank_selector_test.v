@@ -4,7 +4,7 @@
         $finish; \
     end
 
-module test;
+module memory_bank_selector_test;
   reg clk = 0;
   reg write_en = 0;
   reg [1:0] in_data;

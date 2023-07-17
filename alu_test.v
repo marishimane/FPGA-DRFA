@@ -1,4 +1,4 @@
-module test;
+module alu_test;
   localparam add = 3'b000;
   localparam sub = 3'b001;
   localparam or_ = 3'b010;

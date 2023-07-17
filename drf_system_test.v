@@ -6,10 +6,11 @@
 
 
 
-module test;
+module drf_system_test;
   reg clk = 0;
-  reg [3:0] port_input, port_output;
+  reg [3:0] port_input;
   integer test = 100;
+  wire [3:0] port_output;
 
   wire [2:0] in_rx_selector;
   wire [2:0] in_ry_selector;

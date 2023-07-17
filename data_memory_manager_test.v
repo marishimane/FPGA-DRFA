@@ -4,14 +4,16 @@
         $finish; \
     end
 
-localparam INPUT_PORT = 10'b1111111110;
-localparam OUTPUT_PORT = 10'b1111111111;
+module data_memory_manager_test;
+  localparam INPUT_PORT = 10'b1111111110;
+  localparam OUTPUT_PORT = 10'b1111111111;
 
-module test;
   reg clk = 0, in_write_en = 0, in_read_en = 0, in_addr_write_en = 0;
-  reg [7:0] in_data, out_data;
+  reg [7:0] in_data;
   reg [9:0] in_addr;
-  reg [3:0] in_port, out_port;
+  reg [3:0] in_port;
+  wire [7:0] out_data;
+  wire [3:0] out_port;
 
   data_memory_manager data_memory_manager(
     .clk(clk),

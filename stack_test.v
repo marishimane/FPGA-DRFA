@@ -4,7 +4,7 @@
         $finish; \
     end
 
-module test;
+module stack_test;
   reg clk = 0, push_en = 0, pop_en = 0;
 
   reg [8:0] in_pc;

@@ -4,7 +4,7 @@
         $finish; \
     end
 
-module test;
+module instruction_register_test;
   reg clk = 0, ir_load = 0;
   reg [15:0] in_value;
   wire [15:0] out_value;

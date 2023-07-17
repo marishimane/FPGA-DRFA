@@ -4,7 +4,7 @@
         $finish; \
     end
 
-module test;
+module io_ports_test;
   localparam INPUT_PORT = 10'b1111111110;
   localparam OUTPUT_PORT = 10'b1111111111;
 

@@ -4,7 +4,7 @@
         $finish; \
     end
 
-module test;
+module program_counter_test;
   reg clk = 0, pc_load = 0, pc_inc = 0, pc_enOut = 0;
   reg [8:0] in_value;
   

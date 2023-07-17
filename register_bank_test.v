@@ -4,13 +4,13 @@
         $finish; \
     end
 
-module test;
+module register_bank_test;
   reg clk = 0, read_en = 0, write_en = 0;
   reg [7:0] in_data;
   reg [2:0] in_rx_selector, in_ry_selector;
   reg in_indirect_mode_en = 0;
   
-  wire [7:0] out_bus_data, out_rx_data, out_ry_data;
+  wire [7:0] bus_o, out_rx_data, out_ry_data;
 
   register_bank registers(
     .clk(clk),
@@ -50,7 +50,7 @@ module test;
     write_en <= 0;
 
     // Read from Ry selector in the bus
-    `assert( out_bus_data, 8'bz );
+    `assert( bus_o, 8'bz );
 
     // write to R3
     write_en <= 1;
@@ -62,7 +62,7 @@ module test;
     read_en <= 1;
     in_ry_selector <= 3'b011;
     toggle_clk;
-    `assert( out_bus_data, 8'b00000001 );
+    `assert( bus_o, 8'b00000001 );
     read_en <= 0;
 
 
@@ -85,7 +85,7 @@ module test;
     in_indirect_mode_en <= 0;
     in_ry_selector <= 3'b000;
     toggle_clk;
-    `assert( out_bus_data, 8'b00000100 );
+    `assert( bus_o, 8'b00000100 );
     read_en <= 0;
 
     // with indirect mode
@@ -94,7 +94,7 @@ module test;
     in_indirect_mode_en <= 1;
     in_ry_selector <= 3'b000;
     toggle_clk;
-    `assert( out_bus_data, 8'b00001000 );
+    `assert( bus_o, 8'b00001000 );
     read_en <= 0;
   end
 
