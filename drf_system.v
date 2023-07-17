@@ -31,7 +31,9 @@ module drf_system(
   input [3:0] port_input;
   output [3:0] port_output;
 
-  wire [7:0] BUS;
+  wire [7:0] BUS = 'bz;
+  // PC
+  wire [15:5] IR_out;
   // Registers
   wire [7:0] REG_rx, REG_ry;
   wire REG_write_en, REG_read_en;
@@ -50,14 +52,8 @@ module drf_system(
   // Code Memory
   wire [15:0] code_memory_out;
   wire [8:0] code_memory_addr_in;
-  // PC
-  wire [8:0] PC_out;
-  wire [15:0] IR_out;
-  // Stack
-  wire [3:0] CU_out_flags;
 
   code_memory code_memory(
-    .clk(clk),
     .in_addr(code_memory_addr_in),
     .out_data(code_memory_out)
   );
@@ -121,7 +117,6 @@ module drf_system(
     .in_alu_flags(ALU_flags),
     .in_ir(code_memory_out),
     .out_ir(IR_out),
-    .out_flags(CU_out_flags),
     .out_cu_out(BUS),
     .out_pc(code_memory_addr_in),
     .out_alu_enable_out(ALU_enable_out),

@@ -43,14 +43,12 @@ module control_unit_test;
   // Stack
   reg stack_push_en, stack_pop_en;
   reg [3:0] stack_flags;
-  wire [3:0] out_flags;
 
   control_unit CONTROL_UNIT(
     .clk(clk),
     .in_alu_flags(ALU_flags),
     .in_ir(in_ir),
     .out_ir(out_ir),
-    .out_flags(out_flags),
     .out_cu_out(BUS),
     .out_pc(PC_out),
     .out_alu_enable_out(ALU_enable_out),

@@ -122,6 +122,7 @@ module data_memory_manager_test;
     // with the correct port address
     in_addr <= OUTPUT_PORT;
     toggle_clk;
+    toggle_clk;
     `assert( out_port, 4'b1100 );
   end
 

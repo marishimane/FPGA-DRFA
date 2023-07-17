@@ -8,7 +8,7 @@ module control_unit(
   in_alu_flags, in_ir, out_alu_enable_out,
  
   // Values
-  out_cu_out, out_flags, out_ir, out_pc,
+  out_cu_out, out_ir, out_pc,
 
   // Control signals
   out_mbs_wr_enable, out_data_memory_read_enable, out_data_memory_wr_enable,
@@ -58,7 +58,6 @@ module control_unit(
 
   output [15:0] out_ir;
   output [7:0] out_cu_out;
-  output [3:0] out_flags;
   output [8:0] out_pc;
 
   output out_alu_enable_out,
@@ -125,7 +124,7 @@ module control_unit(
   end
 
   always @(posedge clk) begin
-    $display(micro_pc);
+    // $display(micro_pc);
     // $display(mem[micro_pc]);
 
     // Pisar flags cuando se ejecuta una operacion de ALU
@@ -247,7 +246,6 @@ module control_unit(
   assign out_cu_out = (mem[micro_pc][flags_en_out]) ? {4'b0000, flags} :
                       mem[micro_pc][imm_en_out]     ? internal_out_ir[7:0] :
                       8'bz ;
-  assign out_flags = flags;
 
   assign out_ir = internal_out_ir;
 

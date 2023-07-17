@@ -5,6 +5,9 @@ module data_memory_manager(
     clk, in_write_en, in_read_en, in_addr_write_en, in_addr,
     in_data, in_port, out_data, out_port
 );
+  localparam in_port_addr = 10'b1111111110;
+  localparam out_port_addr = 10'b1111111111;
+
   input clk, in_write_en, in_read_en, in_addr_write_en;
   input [9:0] in_addr;
   input [7:0] in_data;
@@ -13,9 +16,13 @@ module data_memory_manager(
   output [3:0] out_port;
 
   reg [9:0] address_register;
+  wire [7:0] out_d = 'bz;
 
-  always @(in_addr) begin
-    if ( in_addr_write_en ) address_register <= in_addr;
+  // TODO: revisar con los cambios
+  always @(posedge clk) begin
+    if ( in_addr_write_en ) begin
+      address_register <= in_addr;
+    end
   end
 
   // always @(posedge clk) begin
@@ -33,7 +40,7 @@ module data_memory_manager(
     .in_write_en(in_write_en),
     .in_read_en(in_read_en),
     .in_data(in_data),
-    .out_data(out_data)
+    .out_data(out_d)
   );
 
   io_ports ports(
@@ -42,8 +49,11 @@ module data_memory_manager(
     .in_read_en(in_read_en),
     .in_data(in_data),
     .in_addr(address_register),
-    .out_data(out_data),
+    .out_data(out_d),
     .in_port(in_port),
     .out_port(out_port)
   );
+
+  // TODO: How to ignore
+  assign out_data = out_d;
 endmodule

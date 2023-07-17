@@ -6,7 +6,7 @@ module io_ports(
   input clk, in_write_en, in_read_en;
   input [3:0] in_port;
   input [9:0] in_addr;
-  input [7:0] in_data;
+  input [3:0] in_data;
   output [3:0] out_port;
   output [7:0] out_data;
 

@@ -38,7 +38,7 @@ module register_bank(
       // Only one register can be written at a time
       registers[in_rx_selector] <= in_data;
     end
-    $display("registers: ", registers);
+    // $display("registers: ", registers);
     // $display("write_en: ", write_en);
     // $display("rx_sel: ", in_rx_selector);
     // $display("ry_sel: ", in_ry_selector);
