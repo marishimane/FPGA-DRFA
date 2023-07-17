@@ -2,41 +2,6 @@
 `include "stack.v"
 `include "program_counter.v"
 
-// control signals
-localparam alu_enable_out = 0;
-localparam pc_load = 1;
-localparam pc_inc = 2;
-localparam pc_enable_out = 3;
-localparam ir_enable_write = 4;
-localparam mbs_wr_enable = 5;
-localparam data_memory_read_enable = 6;
-localparam data_memory_wr_enable = 7;
-localparam data_memory_addr_wr_enable = 12;
-localparam reg_write_en = 8;
-localparam reg_read_en = 9;
-localparam reset_micro_pc = 10;
-localparam imm_en_out = 11;
-localparam decode = 13;
-localparam flags_en_out = 14;
-localparam push_stack = 15;
-localparam pop_stack = 16;
-
-// state machine addresses
-localparam ALU_EXECUTE = 2;
-localparam COPY_REG_EXECUTE = 4;
-localparam JUMP_EXECUTE = 6;
-localparam NOT_JUMP = 8;
-localparam GET_FLAGS_EXECUTE = 9;
-localparam SELECT_MEM_BANK_EXECUTE = 11;
-localparam SET_REG_EXECUTE = 13;
-localparam CALL_SUBRUTINE_EXECUTE = 15;
-localparam RETURN_SUBRUTINE_EXECUTE = 18;
-localparam READ_MEMORY_IMM_EXECUTE = 20;
-localparam WRITE_MEMORY_DIRECT_EXECUTE = 23;
-localparam WRITE_MEMORY_INDIRECT_EXECUTE = 26;
-localparam WRITE_MEMORY_DIRECT_REGISTER_EXECUTE = 30;
-localparam WRITE_MEMORY_INDIRECT_REGISTER_EXECUTE = 33;
-localparam READ_MEMORY_REGISTER_EXECUTE = 36;
 
 module control_unit(
   clk,
@@ -50,6 +15,43 @@ module control_unit(
   out_data_memory_addr_wr_enable, out_reg_write_en, out_reg_read_en,
   out_reset_micro_pc, //TODO volar
 );
+
+  // control signals
+  localparam alu_enable_out = 0;
+  localparam pc_load = 1;
+  localparam pc_inc = 2;
+  localparam pc_enable_out = 3;
+  localparam ir_enable_write = 4;
+  localparam mbs_wr_enable = 5;
+  localparam data_memory_read_enable = 6;
+  localparam data_memory_wr_enable = 7;
+  localparam data_memory_addr_wr_enable = 12;
+  localparam reg_write_en = 8;
+  localparam reg_read_en = 9;
+  localparam reset_micro_pc = 10;
+  localparam imm_en_out = 11;
+  localparam decode = 13;
+  localparam flags_en_out = 14;
+  localparam push_stack = 15;
+  localparam pop_stack = 16;
+
+  // state machine addresses
+  localparam ALU_EXECUTE = 2;
+  localparam COPY_REG_EXECUTE = 4;
+  localparam JUMP_EXECUTE = 6;
+  localparam NOT_JUMP = 8;
+  localparam GET_FLAGS_EXECUTE = 9;
+  localparam SELECT_MEM_BANK_EXECUTE = 11;
+  localparam SET_REG_EXECUTE = 13;
+  localparam CALL_SUBRUTINE_EXECUTE = 15;
+  localparam RETURN_SUBRUTINE_EXECUTE = 18;
+  localparam READ_MEMORY_IMM_EXECUTE = 20;
+  localparam WRITE_MEMORY_DIRECT_EXECUTE = 23;
+  localparam WRITE_MEMORY_INDIRECT_EXECUTE = 26;
+  localparam WRITE_MEMORY_DIRECT_REGISTER_EXECUTE = 30;
+  localparam WRITE_MEMORY_INDIRECT_REGISTER_EXECUTE = 33;
+  localparam READ_MEMORY_REGISTER_EXECUTE = 36;
+
   input clk;
   input [3:0] in_alu_flags;
   input [15:0] in_ir;

@@ -1,4 +1,4 @@
-module test;
+module alu_test;
   localparam add = 3'b000;
   localparam sub = 3'b001;
   localparam or_ = 3'b010;
@@ -16,11 +16,12 @@ module test;
       $display("# TEST PASSED: %s #", testname); \
     end
 
-  reg [7:0] r_a, r_b, out;
+  reg [7:0] r_a, r_b;
   reg [2:0] op;
-  reg [3:0] flags;
   wire fO , fN , fZ , fC;
-  reg clk = 0, enable_out = 1;
+  reg clk = 0, enable_out = 0;
+  wire [7:0] out;
+  wire [3:0] flags;
 
   alu ALU(
     .clk(clk),
@@ -50,6 +51,8 @@ module test;
     r_b <= 8'b00010001;
 
     toggle_clk;
+    enable_out <= 1;
+    toggle_clk;
 
     `assert(out, 8'b00010100, "add numbers")
     `assert(fC, 0, "fC is 0")
@@ -61,6 +64,9 @@ module test;
     r_a <= 8'b01000000;
     r_b <= 8'b01000001;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 
     `assert(out, 8'b10000001, "add numbers")
@@ -73,6 +79,9 @@ module test;
     r_a <= 8'b10000100;
     r_b <= 8'b10000001;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 
     `assert(out, 8'b00000101, "add numbers")
@@ -85,6 +94,9 @@ module test;
     r_a <= 8'b00100011;
     r_b <= 8'b10001001;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 
     `assert(out, 8'b10101100, "add numbers")
@@ -97,6 +109,9 @@ module test;
     r_a <= 8'b01000000;
     r_b <= 8'b11000000;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 
     `assert(out, 8'b00000000, "add numbers")
@@ -112,6 +127,9 @@ module test;
     r_a <= 8'b00010011;
     r_b <= 8'b00000011;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 
     `assert(out, 8'b00010000, "sub numbers")
@@ -124,6 +142,9 @@ module test;
     r_a <= 8'b00000001;
     r_b <= 8'b00000010;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 	// aca no deberia haber carry!!
     `assert(out, 8'b11111111, "sub numbers")
@@ -136,6 +157,9 @@ module test;
     r_a <= 8'b10000001;
     r_b <= 8'b10000011;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 	// aca no deberia haber carry!!
     `assert(out, 8'b11111110, "sub numbers")
@@ -148,6 +172,9 @@ module test;
     r_a <= 8'b10000011;
     r_b <= 8'b10000001;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 	// aca si deberia haber carry!!
     `assert(out, 8'b00000010, "sub numbers")
@@ -160,6 +187,9 @@ module test;
     r_a <= 8'b10000001;
     r_b <= 8'b10000001;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 
     `assert(out, 8'b00000000, "sub numbers")
@@ -172,6 +202,9 @@ module test;
     r_a <= 8'b00000011;
     r_b <= 8'b11111111;
 	// aca no deberia haber carry!!
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
     `assert(out, 8'b00000100, "sub numbers")
     `assert(fC, 1, "fC is 1")
@@ -183,6 +216,9 @@ module test;
     r_a <= 8'b00000001;
     r_b <= 8'b10000000;
 	// aca no deberia haber carry!!
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
     `assert(out, 8'b10000001, "sub numbers")
     `assert(fC, 1, "fC is 1")
@@ -194,6 +230,9 @@ module test;
     r_a <= 8'b11111111;
     r_b <= 8'b00000001;
 	// aca si deberia haber carry!!
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
     `assert(out, 8'b11111110, "sub numbers")
     `assert(fC, 0, "fC is 0")
@@ -205,6 +244,9 @@ module test;
     r_a <= 8'b10000000;
     r_b <= 8'b00000001;
 	// aca si deberia haber carry!!
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
     `assert(out, 8'b01111111, "sub numbers")
     `assert(fC, 0, "fC is 0")
@@ -218,6 +260,9 @@ module test;
     r_a <= 8'b00000011;
     r_b <= 8'b00010001;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 
     `assert(out, 8'b00010011, "a or b")
@@ -228,6 +273,9 @@ module test;
     r_a <= 8'b01010011;
     r_b <= 8'b00010001;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 
     `assert(out, 8'b00010001, "a and b")
@@ -237,6 +285,9 @@ module test;
     
     r_a <= 8'b01010011;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 
     `assert(out, 8'b10101100, "not a")
@@ -248,6 +299,9 @@ module test;
     r_a <= 8'b01010011;
     r_b <= 8'b01010010;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 
     `assert(out, r_a, "cmp a b")
@@ -257,6 +311,9 @@ module test;
     r_a <= 8'b01010011;
     r_b <= 8'b01010011;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 
     `assert(out, r_a, "cmp a b")
@@ -267,6 +324,9 @@ module test;
 
     r_a <= 8'b01010011;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 
     `assert(out, 8'b00101001, "shr a")
@@ -276,6 +336,9 @@ module test;
 
     r_a <= 8'b01010011;
 
+    enable_out <= 0;
+    toggle_clk;
+    enable_out <= 1;
     toggle_clk;
 
     `assert(out, 8'b10100110, "shl a")
@@ -283,7 +346,7 @@ module test;
     $display("########## TESTING ENABLE OUT ##########");
     enable_out <= 0;
     toggle_clk;
-    `assert(out, 'z, "enable out")
+    `assert(out, 8'bz, "enable out")
   end
 
 

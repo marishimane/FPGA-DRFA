@@ -1,7 +1,7 @@
 module code_memory_test;
   reg clk = 0;
   reg [8:0] in_addr;
-  reg [15:0] out_data;
+  wire [15:0] out_data;
 
   code_memory CODE_MEMORY(
     .clk(clk),

@@ -4,16 +4,16 @@
         $finish; \
     end
 
-module test;
+module stack_test;
   reg clk = 0, push_en = 0, pop_en = 0;
 
   reg [8:0] in_pc;
   reg [3:0] in_flags;
 
-  reg [8:0] out_pc;
-  reg [3:0] out_flags;
+  wire [8:0] out_pc;
+  wire [3:0] out_flags;
 
-  io_ports ports(
+  stack stack(
     .clk(clk),
     .push_en(push_en),
     .pop_en(pop_en),
@@ -35,7 +35,7 @@ module test;
     pop_en <= 1'b0;
     toggle_clk;
 
-    `assert( out_pc, 9'b000000010 );
+    `assert( out_pc, 9'b000000011 );
     `assert( out_flags, 4'b1100 );
 
     // push 4 more different addresses and flags
@@ -46,7 +46,7 @@ module test;
     pop_en <= 1'b0;
     toggle_clk;
 
-    `assert( out_pc, 9'b000000100 );
+    `assert( out_pc, 9'b000000101 );
     `assert( out_flags, 4'b1101 );
 
     // 3
@@ -56,7 +56,7 @@ module test;
     pop_en <= 1'b0;
     toggle_clk;
 
-    `assert( out_pc, 9'b000001000 );
+    `assert( out_pc, 9'b000001001 );
     `assert( out_flags, 4'b1110 );
 
     // 4
@@ -66,11 +66,11 @@ module test;
     pop_en <= 1'b0;
     toggle_clk;
 
-    `assert( out_pc, 9'b000010000 );
+    `assert( out_pc, 9'b000010001 );
     `assert( out_flags, 4'b1111 );
 
     // 5
-    in_pc <= 9'b111111111;
+    in_pc <= 9'b111111110;
     in_flags <= 4'b0001;
     push_en <= 1'b1;
     pop_en <= 1'b0;
@@ -87,7 +87,7 @@ module test;
     pop_en <= 1'b0;
     toggle_clk;
 
-    `assert( out_pc, 9'b001000000 );
+    `assert( out_pc, 9'b001000001 );
     `assert( out_flags, 4'b0010 );
 
     // pop and verify that previous last
@@ -99,7 +99,7 @@ module test;
     pop_en <= 1'b1;
     toggle_clk;
 
-    `assert( out_pc, 9'b000010000 );
+    `assert( out_pc, 9'b000010001 );
     `assert( out_flags, 4'b1111 );
 
     // 3
@@ -109,7 +109,7 @@ module test;
     pop_en <= 1'b1;
     toggle_clk;
 
-    `assert( out_pc, 9'b000001000 );
+    `assert( out_pc, 9'b000001001 );
     `assert( out_flags, 4'b1110 );
 
     // 2
@@ -119,7 +119,7 @@ module test;
     pop_en <= 1'b1;
     toggle_clk;
 
-    `assert( out_pc, 9'b000000100 );
+    `assert( out_pc, 9'b000000101 );
     `assert( out_flags, 4'b1101 );
 
     // 1
@@ -129,7 +129,7 @@ module test;
     pop_en <= 1'b1;
     toggle_clk;
 
-    `assert( out_pc, 9'b000000010 );
+    `assert( out_pc, 9'b000000011 );
     `assert( out_flags, 4'b1100 );
 
     // empty 
