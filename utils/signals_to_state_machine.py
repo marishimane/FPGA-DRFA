@@ -88,7 +88,7 @@ state_machine = [
     ["reg_read_en", "data_memory_wr_enable"],
     ["reset_micro_pc", "pc_inc"],
 
-    #30 Directo a registro - write Ry => [Ry] <= R0 // TODO: Fix, No está funcionando. Usa Ry en ambas lecturas a registros pero en el primer caso debe ser el Ry del IR y en el segundo caso debe ser R0
+    #30 Directo a registro - write Ry => [Ry] <= R0
     ["reg_read_en", "data_memory_addr_wr_enable"],
     ["reg_read_en", "data_memory_wr_enable"],
     ["reset_micro_pc", "pc_inc"],
