@@ -231,6 +231,9 @@ def parseInstructions(instructions,labels):
     parseHuman=[]
     for i in instructions:
         try:
+            if not(i[0] in opcodes.keys()):
+                raise ValueError("Error: Invalid instruction \"" + i[0] + "\"")
+                break
             # type_RR : AAA Rx,Ry
             if i[0] in type_RR:
                 if i[2] == ",":

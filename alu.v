@@ -34,7 +34,6 @@ module alu (
     // $display("alu_out: ", out);
     // $display("alu r_a: ", r_a);
     // $display("alu_r_b: ", r_b);
-    // $display("op: ", op_w);
     // $display("alu_en_out: ", in_enable_out);
 
     // if ( in_enable_out == 0 ) begin
@@ -49,11 +48,13 @@ module alu (
         shr : begin r_out <= r_a >> 1; end
         shl : begin r_out <= r_a << 1; end
       endcase
+    // $display("op: ", op_w);
+    // $display("alu_flags: ", flags);
     // end
   end
 
   assign fN = r_out[7];
-  assign fZ = (r_out[7:0] == 8'h0)? 1 :
+  assign fZ = (op_w != cmp && r_out[7:0] == 8'h0 )? 1 :
               (op_w == cmp && r_a == r_b)? 1 : 0;
   assign fC = (op_w == add | op_w == sub)? r_out[8] : (op_w == shr)? r_a[0] : 0;
 
