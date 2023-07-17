@@ -55,7 +55,7 @@ module alu (
 
   assign fN = r_out[7];
   assign fZ = (op_w != cmp && r_out[7:0] == 8'h0 )? 1 :
-              (op_w == cmp && r_a == r_b)? 1 : 0;
+              ((op_w == cmp && r_a == r_b)? 1 : 0);
   assign fC = (op_w == add | op_w == sub)? r_out[8] : (op_w == shr)? r_a[0] : 0;
 
 

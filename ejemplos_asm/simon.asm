@@ -12,38 +12,51 @@ START:
 GAMELOOP:
 	call RAND   ; Generate a random LED index, returns in R0
 
+	; writem PATTERN + R4 => Store the LED index in memory to remember the pattern
 	setr r5, 0x20
 	add r5, r4
-	writem r5  ; writem PATTERN + R4 => Store the LED index in memory to remember the pattern
+	writem r5
+	; end writem
 	add R4, r7   ; Increase the pattern count
 
 	; Display the pattern by lighting up the LEDs
 	setr R1, 0  ; Reset the pattern index
 
 PATTERNLOOP:
+	; readm PATTERN + R1 => Get the LED pattern into R0
 	setr r5, 0x20
 	add r5, r1
-	readm r5  ; readm PATTERN + R1 => Get the LED pattern into R0
+	readm r5 
+	; end readm
 
 	writem 0xFF  ; Set the LEDs according to the pattern
 	call DELAY  ; Delay
-	setr R0, 0  ; Turn off all LEDs
-	writem 0xFF
+	setr R0, 0
+	writem 0xFF  ; Turn off all LEDs
 	call DELAY  ; Delay
 	add R1, r7  ; Increment the pattern index
 	cmp R1, R4  ; Check if we've shown the whole pattern
 	jmpneq PATTERNLOOP  ; If not, repeat
 
+	; Waits for 3 delay times to give the player time to prepare
+	; call DELAY
+	; call DELAY
+	; call DELAY
 
 	; Now the player repeats the pattern
 	setr R1, 0  ; Reset the pattern index
 REPEATLOOP:
 	; Assuming CHECK logic here that waits for a button press
+	; calls subroutine that waits until data in position 0xFE changes from 0 to anything different
+	call WAIT_FOR_INPUT
+
 	readm 0xFE  ; Read the user input from the input port
 	cpyr r6, r0 ; User input
+	; readm PATTERN + R1 => Get the LED pattern into R0
 	setr r5, 0x20
 	add r5, r1
-	readm r5  ; readm PATTERN + R1 => Get the LED pattern into R0
+	readm r5
+	; end readm
 	cmp R0, R6  ; Compare it with the pattern
 	jmpneq GAMEOVER  ; If it's wrong, game over
 	add R1, r7  ; Increment the pattern index
@@ -63,6 +76,18 @@ GAMEOVER_LOOP:
 	call DELAY  ; Delay for blink effect
 	jmpneq GAMEOVER_LOOP
 
+
+WAIT_FOR_INPUT:
+	setr r6, 0
+	readm 0xFE  ; Read the input data into R0
+	cmp R0, r6  ; Compare the data with 0
+	jmpneq WAIT_FOR_INPUT  ; If it's NOT 0, wait: they were writing
+WAIT_FOR_INPUT2:
+	setr r6, 0  ; TODO: Borrar luego, y línea de abajo
+	readm 0xFE  ; Read the input data into R0 
+	cmp R0, r6  ; Compare the data with 0
+	jmpeq WAIT_FOR_INPUT2  ; If it's 0, keep waiting
+	ret  ; They wrote! Return from subroutine
 
 
 RAND:
