@@ -33,16 +33,17 @@ module drf_system(
 
   wire [7:0] BUS = 'bz;
   // PC
-  wire [15:5] IR_out;
+  wire [15:0] IR_out;
+  wire [10:0] IR_reduced = { IR_out[15:5] };
   // Registers
   wire [7:0] REG_rx, REG_ry;
   wire REG_write_en, REG_read_en;
   // ALU
-  wire [2:0] ALU_op = IR_out[13:11];
+  wire [2:0] ALU_op = IR_reduced[8:6];
   wire ALU_enable_out;
   wire [3:0] ALU_flags;
   // Memory Bank Selector (MBS)
-  wire [1:0] MBS_input = IR_out[10:9];
+  wire [1:0] MBS_input = IR_reduced[5:4];
   wire [1:0] MBS_output;
   wire MBS_wr_enable;
   // Data Memory
@@ -92,20 +93,20 @@ module drf_system(
     .read_en(REG_read_en),
     .write_en(REG_write_en),
     .in_rx_selector(
-      // IR_out[10:8]
-      (IR_out[15:11] == 5'b11101)?  // readm?
+      // IR_reduced[10:8]
+      (IR_reduced[10:6] == 5'b11101)?  // readm?
         3'b000 :                    // escribo en el registro 0
-        IR_out[10:8]                // escribo en el registro indicado
+        IR_reduced[5:3]                // escribo en el registro indicado
     ),
     .in_ry_selector( // TODO: Revisar si esto anda para el writem
-      (IR_out[15:11] == 5'b11100)?  // writem?
-          ((IR_out[10:8] == 3'b010 && data_memory_addr_wr_enable == 1)? // writem Ry y además se está escribiendo la address
-              IR_out[7:5] :             // El Ry de la instrucción
+      (IR_reduced[10:6] == 5'b11100)?  // writem?
+          ((IR_reduced[5:3] == 3'b010 && data_memory_addr_wr_enable == 1)? // writem Ry y además se está escribiendo la address
+              IR_reduced[2:0] :             // El Ry de la instrucción
               3'b000                    // leo el registro 0
           ) :
-          IR_out[7:5]                 // El Ry de la instrucción
+          IR_reduced[2:0]                 // El Ry de la instrucción
     ),
-    .in_indirect_mode_en((IR_out[15:8] == 8'b11100_011)? 1'b1 : 1'b0),
+    .in_indirect_mode_en((IR_reduced[10:3] == 8'b11100_011)? 1'b1 : 1'b0),
     .in_data(BUS),
     .out_bus_data(BUS),
     .out_rx_data(REG_rx),
