@@ -55,7 +55,7 @@ module control_unit(
   input [3:0] in_alu_flags;
   input [15:0] in_ir;
 
-  output [15:0] out_ir;
+  output [10:0] out_ir;
   output [7:0] out_cu_out;
   output [8:0] out_pc;
 
@@ -244,7 +244,7 @@ module control_unit(
                       mem[micro_pc][imm_en_out]     ? internal_out_ir[7:0] :
                       8'bz ;
 
-  assign out_ir = internal_out_ir;
+  assign out_ir = internal_out_ir[15:5];
 
   assign out_pc = PC_out;
 

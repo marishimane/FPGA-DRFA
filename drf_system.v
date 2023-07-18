@@ -33,8 +33,8 @@ module drf_system(
 
   wire [7:0] BUS = 'bz;
   // PC
-  wire [15:0] IR_out;
-  wire [10:0] IR_reduced = { IR_out[15:5] };
+  wire [10:0] IR_reduced;
+
   // Registers
   wire [7:0] REG_rx, REG_ry;
   wire REG_write_en, REG_read_en;
@@ -118,7 +118,7 @@ module drf_system(
     .clk(clk),
     .in_alu_flags(ALU_flags),
     .in_ir(code_memory_out),
-    .out_ir(IR_out),
+    .out_ir(IR_reduced),
     .out_cu_out(BUS),
     .out_pc(code_memory_addr_in),
     .out_alu_enable_out(ALU_enable_out),
