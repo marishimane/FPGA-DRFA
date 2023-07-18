@@ -25,15 +25,6 @@ module data_memory_manager(
     end
   end
 
-  // always @(posedge clk) begin
-  //   $display("address_register: %b", address_register);
-  //   $display("in_data: %b", in_data);
-  //   $display("out_data: %b", out_data);
-  //   $display("in_read_en: %b", in_read_en);
-  //   $display("in_write_en: %b", in_write_en);
-  //   $display("in_addr_write_en: %b", in_addr_write_en);
-  // end
-
   data_memory data_memory(
     .clk(clk),
     .in_addr(address_register),
@@ -54,6 +45,5 @@ module data_memory_manager(
     .out_port(out_port)
   );
 
-  // TODO: How to ignore
   assign out_data = out_d;
 endmodule

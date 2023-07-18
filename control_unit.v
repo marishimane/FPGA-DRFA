@@ -2,7 +2,6 @@
 `include "stack.v"
 `include "program_counter.v"
 
-
 module control_unit(
   clk,
   in_alu_flags, in_ir, out_alu_enable_out,
@@ -122,18 +121,13 @@ module control_unit(
   end
 
   always @(posedge clk) begin
-    // $display(micro_pc);
-    // $display(mem[micro_pc]);
-
     // Pisar flags cuando se ejecuta una operacion de ALU
     if(mem[micro_pc][alu_enable_out] == 1'b1) begin
-      // $display("in_alu_flags: ", flags);
       flags <= in_alu_flags;
     end
 
     // Pisar flags si el stack hace pop
     if(mem[micro_pc][pop_stack] == 1'b1) begin
-      // $display("stack_out_flags: ", flags);
       flags <= stack_out_flags;
     end
 
@@ -161,8 +155,6 @@ module control_unit(
             micro_pc <= (flags[0] == 1'b1) ? JUMP_EXECUTE : NOT_JUMP;
           end
           if(op_code[1:0] == 2'b10) begin // Jmpneq
-            // $display("FLAGS: ", flags);
-            // $display("FLAG Z: ", flags[0]);
             micro_pc <= (flags[0] == 1'b0) ? JUMP_EXECUTE : NOT_JUMP;
           end
         end
@@ -247,5 +239,4 @@ module control_unit(
   assign out_ir = internal_out_ir[15:5];
 
   assign out_pc = PC_out;
-
 endmodule
