@@ -31,10 +31,18 @@ PATTERNLOOP:
 
 	writem 0xFF  ; Set the LEDs according to the pattern
 	call DELAY  ; Delays
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
 
 	setr R0, 0
 	writem 0xFF  ; Turn off all LEDs
 	call DELAY  ; Delays
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
 
 	add R1, r7  ; Increment the pattern index
 	cmp R1, R4  ; Check if we've shown the whole pattern
@@ -67,9 +75,17 @@ GAMEOVER_LOOP:
 	setr R0, 0xF  ; Set all LEDs on (binary 1111)
 	writem 0xFF
 	call DELAY  ; Delay for blink effect
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
 	setr R0, 0  ; Set all LEDs off
 	writem 0xFF
 	call DELAY  ; Delay for blink effect
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
 	readm 0xFE
 	setr r6, 0xF  ; Check the reset signal
 	and R0, r6   ; Filter out all but the input bits
@@ -113,9 +129,9 @@ END_SHIFT_LOOP:
 
 DELAY:
 	setr r0, 0
-	setr R6, 1 ; Single delay
+	setr R6, 255
 DELAY_BIG_LOOP:
-	setr R5, 1 ; Single delay
+	setr R5, 255
 DELAY_MEDIUM_LOOP:
 	sub R5, r7
 	cmp R5, r0
