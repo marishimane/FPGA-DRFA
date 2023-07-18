@@ -68,12 +68,17 @@ REPEATLOOP:
 GAMEOVER:
 	setr R2, 0  ; Initialize loop counter
 GAMEOVER_LOOP:
-	setr R0, 15  ; Set all LEDs on (binary 1111)
+	setr R0, 0xF  ; Set all LEDs on (binary 1111)
 	writem 0xFF
 	call DELAY  ; Delay for blink effect
 	setr R0, 0  ; Set all LEDs off
 	writem 0xFF
 	call DELAY  ; Delay for blink effect
+	readm 0xFE
+	setr r6, 0xF  ; Check the reset signal
+	and R0, r6   ; Filter out all but the input bits
+	cmp R0, r6  ; Compare it with 0xF
+	jmpeq RESET  ; If reset signal is set, call RESET
 	jmpneq GAMEOVER_LOOP
 
 
@@ -117,3 +122,19 @@ LOOP_DELAY:
 	cmp r6, r7
 	jmpneq LOOP_DELAY
 	ret
+
+RESET:
+	gflags r0
+	setr R1, 0
+RESET_PATTERN_LOOP:
+	setr R0, 0
+	setr r5, 0x20
+	add r5, r1
+	writem r5  ; Clear the pattern memory
+	add R1, r7
+	cmp R1, R4
+	jmpneq RESET_PATTERN_LOOP
+	setr R0, 0  
+	writem 0x10 ; Clear the counter
+	setr R4, 0  ; Clear the pattern count
+	jmp START

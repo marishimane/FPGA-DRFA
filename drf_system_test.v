@@ -10,7 +10,7 @@ module drf_system_test;
   reg clk = 0;
   reg [3:0] port_input = 'b0;
   wire [3:0] port_output;
-  integer test = 2000;
+  integer test = 4000;
 
   wire [2:0] in_rx_selector;
   wire [2:0] in_ry_selector;
@@ -58,6 +58,25 @@ module drf_system_test;
       // Tercer patrón
       if ( ns > 34000 && ns < 35000 ) begin
         port_input <= 4'b1000; // Para que falle
+      end
+
+      // Reset
+      if ( ns > 45000 && ns < 46000 ) begin
+        port_input <= 4'b0100; // Does not reset
+      end
+      if ( ns > 50000 && ns < 60000 ) begin
+        port_input <= 4'b1111; // Does reset
+      end
+      if ( ns > 62000 && ns < 63000 ) begin
+        port_input <= 4'b0000;
+      end
+
+      // Primer patrón de nuevo
+      if ( ns > 65000 && ns < 67000 ) begin
+        port_input <= 4'b0010;
+      end
+      if ( ns > 69000 && ns < 70000 ) begin
+        port_input <= 4'b0000;
       end
     end
   end

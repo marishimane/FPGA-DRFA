@@ -14,9 +14,9 @@ module register_bank(
   reg [7:0] registers [0:7];
 
   initial begin
-    /* registers[0] <= 0; registers[1] <= 0; registers[2] <= 0; */
-    /* registers[3] <= 0; registers[4] <= 0; registers[5] <= 0; */
-    /* registers[6] <= 0; registers[7] <= 0; */
+    // registers[0] <= 0; registers[1] <= 0; registers[2] <= 0;
+    // registers[3] <= 0; registers[4] <= 0; registers[5] <= 0;
+    // registers[6] <= 0; registers[7] <= 0;
   end
 
   always @(posedge clk) begin
@@ -25,11 +25,7 @@ module register_bank(
     // $display("register_write_en: ", write_en);
     // $display("register_out_bus_data: ", out_bus_data);
     // $display("register_in_ry_selector: ", in_ry_selector);
-
     // $display("register_in_rx_selector: ", in_rx_selector);
-
-    // $display("registers[ry_sel]: ", registers[in_ry_selector]);
-    // $display("registers[rx_sel]: ", registers[in_rx_selector]);
     // $display("registers_indirect_mode: ", in_indirect_mode_en);
     // $display("out_rx_data", out_rx_data);
     // $display("out_ry_data", out_ry_data);
@@ -39,9 +35,6 @@ module register_bank(
       registers[in_rx_selector] <= in_data;
     end
     // $display("registers: ", registers);
-    // $display("write_en: ", write_en);
-    // $display("rx_sel: ", in_rx_selector);
-    // $display("ry_sel: ", in_ry_selector);
   end
 
   assign out_bus_data = read_en
