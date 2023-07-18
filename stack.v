@@ -1,7 +1,7 @@
 module stack(
   clk, push_en, pop_en,
   in_pc, in_flags,
-  out_pc, out_flags,
+  out_pc, out_flags
 );
 
   input clk, push_en, pop_en;

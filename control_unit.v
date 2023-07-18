@@ -12,8 +12,7 @@ module control_unit(
 
   // Control signals
   out_mbs_wr_enable, out_data_memory_read_enable, out_data_memory_wr_enable,
-  out_data_memory_addr_wr_enable, out_reg_write_en, out_reg_read_en,
-  out_reset_micro_pc, //TODO volar
+  out_data_memory_addr_wr_enable, out_reg_write_en, out_reg_read_en
 );
 
   // control signals
@@ -62,8 +61,7 @@ module control_unit(
 
   output out_alu_enable_out,
     out_mbs_wr_enable, out_data_memory_read_enable,
-    out_data_memory_wr_enable, out_data_memory_addr_wr_enable, out_reg_write_en, out_reg_read_en,
-    out_reset_micro_pc;
+    out_data_memory_wr_enable, out_data_memory_addr_wr_enable, out_reg_write_en, out_reg_read_en;
 
   // State machine
   reg [16:0] mem [0:38];  // TODO: read from a file as variables
@@ -241,7 +239,6 @@ module control_unit(
   assign out_data_memory_wr_enable = mem[micro_pc][data_memory_wr_enable];
   assign out_reg_write_en = mem[micro_pc][reg_write_en];
   assign out_reg_read_en = mem[micro_pc][reg_read_en];
-  assign out_reset_micro_pc = mem[micro_pc][reset_micro_pc];
 
   assign out_cu_out = (mem[micro_pc][flags_en_out]) ? {4'b0000, flags} :
                       mem[micro_pc][imm_en_out]     ? internal_out_ir[7:0] :

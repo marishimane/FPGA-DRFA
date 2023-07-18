@@ -59,6 +59,7 @@ module drf_system(
   );
 
   memory_bank_selector memory_bank_selector(
+    .clk(clk),
     .write_en(MBS_wr_enable),
     .in_data(MBS_input),
     .out_data(MBS_output)
@@ -104,7 +105,7 @@ module drf_system(
           ) :
           IR_out[7:5]                 // El Ry de la instrucción
     ),
-    .in_indirect_mode_en((IR_out[15:8] == 8'b11100_011)? 1 : 0),
+    .in_indirect_mode_en((IR_out[15:8] == 8'b11100_011)? 1'b1 : 1'b0),
     .in_data(BUS),
     .out_bus_data(BUS),
     .out_rx_data(REG_rx),

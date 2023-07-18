@@ -1,6 +1,6 @@
 module instruction_register(
   clk, ir_load,
-  in_value, out_value,
+  in_value, out_value
 );
 
   input clk, ir_load;

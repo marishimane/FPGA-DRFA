@@ -1,6 +1,6 @@
 module program_counter(
   clk, pc_load, pc_inc, pc_enOut,
-  in_value, out_value,
+  in_value, out_value
 );
 
   input clk, pc_load, pc_inc, pc_enOut;

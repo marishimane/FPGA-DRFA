@@ -1,6 +1,6 @@
 module data_memory(
     clk, in_addr, in_write_en, in_read_en,
-    in_data, out_data,
+    in_data, out_data
 );
   input clk;
 

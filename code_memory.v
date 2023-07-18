@@ -1,6 +1,6 @@
 // Code gets loaded at synth time
 module code_memory(
-    in_addr, out_data,
+    in_addr, out_data
 );
   input [8:0] in_addr;
 

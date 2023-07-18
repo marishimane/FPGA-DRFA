@@ -47,7 +47,7 @@ module data_memory_manager(
     .clk(clk),
     .in_write_en(in_write_en),
     .in_read_en(in_read_en),
-    .in_data(in_data),
+    .in_data(in_data[3:0]),
     .in_addr(address_register),
     .out_data(out_d),
     .in_port(in_port),

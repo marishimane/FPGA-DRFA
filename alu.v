@@ -44,7 +44,6 @@ module alu (
         and_ : begin r_out <= r_a & r_b; end
         not_ : begin r_out <= ~r_a; end
         cmp : begin r_out <= r_a; end
-        cmp : begin r_out <= r_a == r_b; end
         shr : begin r_out <= r_a >> 1; end
         shl : begin r_out <= r_a << 1; end
       endcase
