@@ -38,15 +38,9 @@ PATTERNLOOP:
 	cmp R1, R4  ; Check if we've shown the whole pattern
 	jmpneq PATTERNLOOP  ; If not, repeat
 
-	; Waits for 3 delay times to give the player time to prepare
-	; call DELAY
-	; call DELAY
-	; call DELAY
-
 	; Now the player repeats the pattern
 	setr R1, 0  ; Reset the pattern index
 REPEATLOOP:
-	; Assuming CHECK logic here that waits for a button press
 	; calls subroutine that waits until data in position 0xFE changes from 0 to anything different
 	call WAIT_FOR_INPUT
 
@@ -88,7 +82,7 @@ WAIT_FOR_INPUT:
 	cmp R0, r6  ; Compare the data with 0
 	jmpneq WAIT_FOR_INPUT  ; If it's NOT 0, wait: they were writing
 WAIT_FOR_INPUT2:
-	setr r6, 0  ; TODO: Borrar luego, y línea de abajo
+	setr r6, 0  ;
 	readm 0xFE  ; Read the input data into R0 
 	cmp R0, r6  ; Compare the data with 0
 	jmpeq WAIT_FOR_INPUT2  ; If it's 0, keep waiting
@@ -116,7 +110,7 @@ END_SHIFT_LOOP:
 
 
 DELAY:
-	setr r6, 2
+	setr r6, 0x02 ; NOTE: set to a number according to the clock speed
 LOOP_DELAY:
 	sub r6, r7
 	cmp r6, r7
