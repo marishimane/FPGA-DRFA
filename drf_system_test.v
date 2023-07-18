@@ -65,7 +65,7 @@ module drf_system_test;
         port_input <= 4'b0100; // Does not reset
       end
       if ( ns > 50000 && ns < 60000 ) begin
-        port_input <= 4'b1111; // Does reset
+        port_input <= 4'b1001; // Does reset
       end
       if ( ns > 62000 && ns < 63000 ) begin
         port_input <= 4'b0000;

@@ -214,7 +214,7 @@ GAMEOVER_LOOP:
 	call DELAY
 	call DELAY
 	readm 0xFE
-	setr r6, 0xF  ; Check the reset signal
+	setr r6, 0x9  ; Check the reset signal
 	and R0, r6   ; Filter out all but the input bits
 	cmp R0, r6  ; Compare it with 0xF
 	jmpeq RESET  ; If reset signal is set, call RESET
