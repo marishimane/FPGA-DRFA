@@ -35,10 +35,72 @@ PATTERNLOOP:
 	call DELAY
 	call DELAY
 	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
 
 	setr R0, 0
 	writem 0xFF  ; Turn off all LEDs
 	call DELAY  ; Delays
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
 	call DELAY
 	call DELAY
 	call DELAY
@@ -55,6 +117,9 @@ REPEATLOOP:
 	call WAIT_FOR_INPUT
 
 	readm 0xFE  ; Read the user input from the input port
+	setr r6, 0xF  ; Check the reset signal
+	and R0, r6   ; Filter out all but the input bits
+
 	cpyr r6, r0 ; User input
 	; readm PATTERN + R1 => Get the LED pattern into R0
 	setr r5, 0x20
@@ -79,9 +144,71 @@ GAMEOVER_LOOP:
 	call DELAY
 	call DELAY
 	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
 	setr R0, 0  ; Set all LEDs off
 	writem 0xFF
 	call DELAY  ; Delay for blink effect
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
+	call DELAY
 	call DELAY
 	call DELAY
 	call DELAY
@@ -95,13 +222,17 @@ GAMEOVER_LOOP:
 
 
 WAIT_FOR_INPUT:
-	setr r6, 0
 	readm 0xFE  ; Read the input data into R0
+	setr r6, 0xF
+	and R0, r6   ; Filter out all but the input bits
+	setr r6, 0
 	cmp R0, r6  ; Compare the data with 0
 	jmpneq WAIT_FOR_INPUT  ; If it's NOT 0, wait: they were writing
 WAIT_FOR_INPUT2:
-	setr r6, 0  ;
 	readm 0xFE  ; Read the input data into R0 
+	setr r6, 0xF
+	and R0, r6   ; Filter out all but the input bits
+	setr r6, 0  ;
 	cmp R0, r6  ; Compare the data with 0
 	jmpeq WAIT_FOR_INPUT2  ; If it's 0, keep waiting
 	ret  ; They wrote! Return from subroutine
@@ -143,7 +274,6 @@ DELAY_MEDIUM_LOOP:
 
 
 RESET:
-	gflags r0
 	setr R1, 0
 RESET_PATTERN_LOOP:
 	setr R0, 0
