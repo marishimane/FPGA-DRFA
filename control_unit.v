@@ -63,7 +63,7 @@ module control_unit(
     out_data_memory_wr_enable, out_data_memory_addr_wr_enable, out_reg_write_en, out_reg_read_en;
 
   // State machine
-  reg [16:0] mem [0:38];  // TODO: read from a file as variables
+  reg [16:0] mem [0:38];
   reg [5:0] micro_pc;
   reg [3:0] flags;
   wire [15:0] internal_out_ir;

@@ -65,10 +65,6 @@ module control_unit_test;
     $dumpfile("dump.vcd");
     $dumpvars(1);
 
-    // TODO agregar asserts y testear
-    // todas las operaciones de la alu
-    // o solamente que arranque en
-
     // Op ALU
     // add 000, 001
     /* in_ir = 16'b0; */

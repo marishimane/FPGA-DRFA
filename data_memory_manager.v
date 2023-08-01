@@ -18,7 +18,6 @@ module data_memory_manager(
   reg [9:0] address_register;
   wire [7:0] out_d = 'bz;
 
-  // TODO: revisar con los cambios
   always @(posedge clk) begin
     if ( in_addr_write_en ) begin
       address_register <= in_addr;

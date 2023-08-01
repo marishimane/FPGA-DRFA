@@ -93,7 +93,7 @@ state_machine = [
     ["reg_read_en", "data_memory_wr_enable"],
     ["reset_micro_pc", "pc_inc"],
 
-    #33 Indirecto a registro - write [Ry] => [registros[Ry]] <= R0 // TODO: REVISAR si el Ry es correcto (parece estar harcodeado a 0)
+    #33 Indirecto a registro - write [Ry] => [registros[Ry]] <= R0
     # Se resuelve con el bankRegister. Toma del IR que el direccionamiento es indirecto
     ["reg_read_en", "data_memory_addr_wr_enable"],
     ["reg_read_en", "data_memory_wr_enable"],

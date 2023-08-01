@@ -98,7 +98,7 @@ module drf_system(
         3'b000 :                    // escribo en el registro 0
         IR_reduced[5:3]                // escribo en el registro indicado
     ),
-    .in_ry_selector( // TODO: Revisar si esto anda para el writem
+    .in_ry_selector(
       (IR_reduced[10:6] == 5'b11100)?  // writem?
           ((IR_reduced[5:3] == 3'b010 && data_memory_addr_wr_enable == 1)? // writem Ry y además se está escribiendo la address
               IR_reduced[2:0] :             // El Ry de la instrucción
