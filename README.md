@@ -1,6 +1,6 @@
 # Desert Rain Frog Architecture - Programación de softcores en FPGA
 
-Este repositorio plantea una solución a un trabajo práctico correspondiente a la materia **Programación de Softcores en FPGA** de la carrera de Ingeniería en **Computación de la Universidad de Buenos Aires**.
+Este repositorio plantea una solución a un trabajo práctico correspondiente a la materia **Programación de Softcores en FPGA** de la carrera **Ciencias de la Computación de la Universidad de Buenos Aires**.
 
 ## Integrantes
 > - Mariana Shimane
